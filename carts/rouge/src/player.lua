@@ -8,6 +8,7 @@ function make_player(x, y)
     soy = 0,
     c = 10,
     t = 0,
+    flip = false,
     anim = { 240, 241, 242, 243 }
   }
 
