@@ -11,7 +11,7 @@ function _init()
 end
 
 function start_game()
-  p = make_player(4, 5)
+  p = make_player(1, 1)
 end
 
 function _update60()

@@ -33,6 +33,10 @@ function move_player(_dx, _dy)
     p.t = 0
     p.mov = move_bump
     _upd = update_pturn
+
+    if fget(tile, 1) then
+      trigger_bump(tile, destx, desty)
+    end
   else
     p.x += _dx
     p.y += _dy
@@ -68,4 +72,19 @@ function move_bump()
 
   p.ox = p.sox * time
   p.oy = p.soy * time
+end
+
+function trigger_bump(_tile, _dx, _dy)
+  if _tile == 5 then
+    -- tablets
+  elseif _tile == 7 or _tile == 8 then
+    -- pots
+    mset(_dx, _dy, 1)
+  elseif _tile == 10 or _tile == 12 then
+    -- chests
+    mset(_dx, _dy, _tile - 1)
+  elseif _tile == 13 then
+    -- doors
+    mset(_dx, _dy, 1)
+  end
 end
