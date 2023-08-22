@@ -11,6 +11,7 @@ function _init()
 end
 
 function start_game()
+  butt_buff = -1
   p = make_player(1, 1)
 end
 

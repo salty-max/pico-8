@@ -49,8 +49,11 @@ function move_player(_dx, _dy)
 end
 
 function update_pturn()
-  p.t = min(p.t + 0.128, 1)
+  if butt_buff == -1 then
+    butt_buff = get_butt()
+  end
 
+  p.t = min(p.t + 0.128, 1)
   p.mov()
 
   if p.t == 1 then
