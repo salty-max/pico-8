@@ -2,8 +2,6 @@ function draw_game()
   cls(0)
   map()
 
-  palt(0, false)
-  pal(6, p.c)
-  spr(240, p.x * 8, p.y * 8)
-  pal()
+  draw_spr(get_frame(p.anim), p.x * 8, p.y * 8, 9)
+  draw_spr(get_frame(p.anim), p.x * 8 + p.ox, p.y * 8 + p.oy, p.c)
 end

@@ -1,4 +1,6 @@
 function _init()
+  t = 0
+
   _upd = update_game
   _drw = draw_game
 
@@ -10,6 +12,7 @@ function start_game()
 end
 
 function _update()
+  t += 1
   _upd()
 end
 
