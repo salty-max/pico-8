@@ -1,6 +1,9 @@
 function _init()
   t = 0
 
+  dir_x = { -1, 1, 0, 0 }
+  dir_y = { 0, 0, -1, 1 }
+
   _upd = update_game
   _drw = draw_game
 
@@ -11,7 +14,7 @@ function start_game()
   p = make_player(4, 5)
 end
 
-function _update()
+function _update60()
   t += 1
   _upd()
 end
