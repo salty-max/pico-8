@@ -38,6 +38,7 @@ function move_player(_dx, _dy)
       trigger_bump(tile, destx, desty)
     end
   else
+    sfx(63)
     p.x += _dx
     p.y += _dy
     p.sox, p.soy = -_dx * 8, -_dy * 8
@@ -82,12 +83,15 @@ function trigger_bump(_tile, _dx, _dy)
     -- tablets
   elseif _tile == 7 or _tile == 8 then
     -- pots
+    sfx(59)
     mset(_dx, _dy, 1)
   elseif _tile == 10 or _tile == 12 then
     -- chests
+    sfx(61)
     mset(_dx, _dy, _tile - 1)
   elseif _tile == 13 then
     -- doors
+    sfx(62)
     mset(_dx, _dy, 1)
   end
 end
