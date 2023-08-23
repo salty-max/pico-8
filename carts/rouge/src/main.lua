@@ -13,6 +13,14 @@ end
 function start_game()
   butt_buff = -1
   p = make_player(1, 1)
+
+  windows = {}
+  add_window(
+    32, 40, 64, 48, {
+      "coucou chaton",
+      "je t'aime"
+    }
+  )
 end
 
 function _update60()
@@ -22,4 +30,5 @@ end
 
 function _draw()
   _drw()
+  draw_windows()
 end

@@ -6,6 +6,7 @@ __lua__
 #include src/update.lua
 #include src/draw.lua
 #include src/player.lua
+#include src/ui.lua
 #include src/util.lua
 
 __gfx__

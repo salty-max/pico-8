@@ -1,8 +1,5 @@
 function update_game()
-  if butt_buff == -1 then
-    butt_buff = get_butt()
-  end
-
+  buffer_butt()
   handle_butt(butt_buff)
   butt_buff = -1
 end
@@ -15,6 +12,12 @@ function get_butt()
   end
 
   return -1
+end
+
+function buffer_butt()
+  if butt_buff == -1 then
+    butt_buff = get_butt()
+  end
 end
 
 function handle_butt(_b)

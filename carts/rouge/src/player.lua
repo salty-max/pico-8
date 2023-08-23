@@ -1,5 +1,5 @@
 function make_player(x, y)
-  p = {
+  local p = {
     x = x,
     y = y,
     ox = 0,
@@ -50,9 +50,7 @@ function move_player(_dx, _dy)
 end
 
 function update_pturn()
-  if butt_buff == -1 then
-    butt_buff = get_butt()
-  end
+  buffer_butt()
 
   p.t = min(p.t + 0.128, 1)
   p.mov()
