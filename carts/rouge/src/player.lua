@@ -8,16 +8,23 @@ function move_player(_dx, _dy)
     p.flp = false
   end
 
-  if not is_walkable(destx, desty) then
-    -- wall
+  if not is_walkable(destx, desty, "check_mobs") then
+    -- not walkable
     p.sox, p.soy = _dx * 8, _dy * 8
     p.ox, p.oy = 0, 0
     p_t = 0
     p.mov = move_bump
     _upd = update_pturn
 
-    if fget(tile, 1) then
-      trigger_bump(tile, destx, desty)
+    local mob = get_mob_at(destx, desty)
+    if not mob then
+      -- interact
+      if fget(tile, 1) then
+        trigger_bump(tile, destx, desty)
+      end
+    else
+      -- hit mob
+      hit_mob(p, mob)
     end
   else
     sfx(63)

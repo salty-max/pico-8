@@ -29,11 +29,20 @@ function get_mob_at(_x, _y)
   return nil
 end
 
-function is_walkable(_x, _y)
+function is_walkable(_x, _y, _mode)
+  local mode = ""
   local tile = mget(_x, _y)
 
+  if (_mode) mode = _mode
   if is_in_bounds(_x, _y) then
-    return not fget(tile, 0)
+    if fget(tile, 0) then
+      return false
+    else
+      if mode == "check_mobs" then
+        return not get_mob_at(_x, _y)
+      end
+      return true
+    end
   end
 
   return false
@@ -58,4 +67,8 @@ function move_bump(_m, _mt)
 
   _m.ox = _m.sox * time
   _m.oy = _m.soy * time
+end
+
+function hit_mob(_ma, _mb)
+  -- TODO
 end
