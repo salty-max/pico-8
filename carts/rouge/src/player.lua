@@ -77,8 +77,9 @@ function move_bump()
 end
 
 function trigger_bump(_tile, _dx, _dy)
-  if _tile == 5 then
+  if _tile == 6 then
     -- tablets
+    show_dialog({ "welcome to my lair", "", "climb the tower", "if you dare", "", "bwa ha ha ha ha", "*cough* *cough*" }, 120)
   elseif _tile == 7 or _tile == 8 then
     -- pots
     sfx(59)
