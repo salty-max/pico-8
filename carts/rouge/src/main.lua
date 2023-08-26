@@ -1,3 +1,8 @@
+mobs_anim = {
+  240,
+  192
+}
+
 function _init()
   t = 0
 
@@ -12,7 +17,14 @@ end
 
 function start_game()
   butt_buff = -1
-  p = make_player(1, 1)
+  mobs = {}
+
+  -- player
+  p = add_mob(1, 1, 1)
+
+  add_mob(2, 2, 3)
+
+  p_t = 0
 
   windows = {}
   dialog_box = nil

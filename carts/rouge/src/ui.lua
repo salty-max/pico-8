@@ -16,8 +16,7 @@ function draw_windows()
     local wx, wy, ww, wh = w.x, w.y, w.w, w.h
 
     rect_fill(wx, wy, ww, wh, 0)
-    rect_fill(wx + 1, wy + 1, ww - 2, wh - 2, 6)
-    rect_fill(wx + 2, wy + 2, ww - 4, wh - 4, 0)
+    rect(wx + 1, wy + 1, wx + ww - 2, wy + wh - 2, 6)
 
     wx += 4
     wy += 4
