@@ -20,6 +20,30 @@ function add_mob(_type, _x, _y)
   return m
 end
 
+function get_mob_at(_x, _y)
+  for m in all(mobs) do
+    if m.x == _x and m.y == _y then
+      return m
+    end
+  end
+  return nil
+end
+
+function is_walkable(_x, _y)
+  local tile = mget(_x, _y)
+
+  if is_in_bounds(_x, _y) then
+    return not fget(tile, 0)
+  end
+
+  return false
+end
+
+function is_in_bounds(_x, _y)
+  local check = _x < 0 or _x > 15 or _y < 0 or _y > 15
+  return not check
+end
+
 function move_walk(_m, _mt)
   _m.ox = _m.sox * (1 - _mt)
   _m.oy = _m.soy * (1 - _mt)

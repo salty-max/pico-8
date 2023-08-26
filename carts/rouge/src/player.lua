@@ -8,7 +8,7 @@ function move_player(_dx, _dy)
     p.flp = false
   end
 
-  if fget(tile, 0) then
+  if not is_walkable(destx, desty) then
     -- wall
     p.sox, p.soy = _dx * 8, _dy * 8
     p.ox, p.oy = 0, 0
