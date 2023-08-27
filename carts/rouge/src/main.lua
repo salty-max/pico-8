@@ -1,6 +1,11 @@
-mobs_anim = {
-  240,
-  192
+-- bestiary indexes
+-- 1: player
+-- 2: slime
+
+bestiary = {
+  anim = { 240, 192 },
+  atk = { 1, 1 },
+  hp = { 5, 1 }
 }
 
 function _init()

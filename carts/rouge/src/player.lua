@@ -2,18 +2,12 @@ function move_player(_dx, _dy)
   local destx, desty = p.x + _dx, p.y + _dy
   local tile = mget(destx, desty)
 
-  if _dx < 0 then
-    p.flp = true
-  elseif _dx > 0 then
-    p.flp = false
-  end
+  mob_flip(p, _dx)
 
   if not is_walkable(destx, desty, "check_mobs") then
     -- not walkable
-    p.sox, p.soy = _dx * 8, _dy * 8
-    p.ox, p.oy = 0, 0
     p_t = 0
-    p.mov = move_bump
+    mob_bump(p, _dx, _dy)
     _upd = update_pturn
 
     local mob = get_mob_at(destx, desty)
@@ -21,6 +15,8 @@ function move_player(_dx, _dy)
       -- interact
       if fget(tile, 1) then
         trigger_bump(tile, destx, desty)
+      else
+        sfx(58)
       end
     else
       -- hit mob
@@ -28,12 +24,8 @@ function move_player(_dx, _dy)
     end
   else
     sfx(63)
-    p.x += _dx
-    p.y += _dy
-    p.sox, p.soy = -_dx * 8, -_dy * 8
-    p.ox, p.oy = p.sox, p.soy
     p_t = 0
-    p.mov = move_walk
+    mob_walk(p, _dx, _dy)
     _upd = update_pturn
   end
 end

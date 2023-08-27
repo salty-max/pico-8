@@ -12,7 +12,7 @@ function add_mob(_type, _x, _y)
     anim = {}
   }
   for i = 0, 3 do
-    add(m.anim, mobs_anim[_type] + i)
+    add(m.anim, bestiary.anim[_type] + i)
   end
 
   add(mobs, m)
@@ -51,6 +51,28 @@ end
 function is_in_bounds(_x, _y)
   local check = _x < 0 or _x > 15 or _y < 0 or _y > 15
   return not check
+end
+
+function mob_walk(_m, _dx, _dy)
+  _m.x += _dx
+  _m.y += _dy
+  _m.sox, _m.soy = -_dx * 8, -_dy * 8
+  _m.ox, _m.oy = _m.sox, _m.soy
+  _m.mov = move_walk
+end
+
+function mob_bump(_m, _dx, _dy)
+  _m.sox, _m.soy = _dx * 8, _dy * 8
+  _m.ox, _m.oy = 0, 0
+  _m.mov = move_bump
+end
+
+function mob_flip(_m, _dx)
+  if _dx < 0 then
+    _m.flp = true
+  elseif _dx > 0 then
+    _m.flp = false
+  end
 end
 
 function move_walk(_m, _mt)
