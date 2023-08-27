@@ -17,6 +17,7 @@ function _init()
   _upd = update_game
   _drw = draw_game
 
+  debug = {}
   start_game()
 end
 
@@ -24,13 +25,18 @@ function start_game()
   butt_buff = -1
   mobs = {}
 
-  -- player
-  p = add_mob(1, 1, 1)
+  player = add_mob(1, 1, 1)
 
-  add_mob(2, 2, 3)
-  add_mob(2, 1, 10)
-  add_mob(2, 3, 11)
-  add_mob(2, 7, 12)
+  for y = 0, 15 do
+    for x = 0, 15 do
+      for i, m in pairs(bestiary.anim) do
+        if mget(x, y) == m then
+          add_mob(i, x, y)
+          mset(x, y, 1)
+        end
+      end
+    end
+  end
 
   p_t = 0
 
@@ -48,4 +54,9 @@ end
 function _draw()
   _drw()
   draw_windows()
+  cursor(4, 4)
+  color(8)
+  for d in all(debug) do
+    print(d)
+  end
 end

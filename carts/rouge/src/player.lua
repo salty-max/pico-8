@@ -1,13 +1,13 @@
 function move_player(_dx, _dy)
-  local destx, desty = p.x + _dx, p.y + _dy
+  local destx, desty = player.x + _dx, player.y + _dy
   local tile = mget(destx, desty)
 
-  mob_flip(p, _dx)
+  mob_flip(player, _dx)
 
   if not is_walkable(destx, desty, "check_mobs") then
     -- not walkable
     p_t = 0
-    mob_bump(p, _dx, _dy)
+    mob_bump(player, _dx, _dy)
     _upd = update_pturn
 
     local mob = get_mob_at(destx, desty)
@@ -19,12 +19,12 @@ function move_player(_dx, _dy)
     else
       -- hit mob
       sfx(58)
-      hit_mob(p, mob)
+      hit_mob(player, mob)
     end
   else
     sfx(63)
     p_t = 0
-    mob_walk(p, _dx, _dy)
+    mob_walk(player, _dx, _dy)
     _upd = update_pturn
   end
 end
@@ -33,10 +33,11 @@ function update_pturn()
   buffer_butt()
 
   p_t = min(p_t + 0.128, 1)
-  p.mov(p, p_t)
+  player.mov(player, p_t)
 
   if p_t == 1 then
     _upd = update_game
+    do_ai()
   end
 end
 

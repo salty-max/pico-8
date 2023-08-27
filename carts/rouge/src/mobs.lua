@@ -106,3 +106,49 @@ function hit_mob(_am, _dm)
     del(mobs, _dm)
   end
 end
+
+function do_ai()
+  for m in all(mobs) do
+    if m != player then
+      m.mov = nil
+      if dist(m.x, m.y, player.x, player.y) == 1 then
+        -- attack player
+        dx, dy = player.x - m.x, player.y - m.y
+        sfx(57)
+        mob_bump(m, dx, dy)
+        hit_mob(m, player)
+      else
+        -- move towards player
+        local bdst, bx, by = 999, 0, 0
+        for i = 1, 4 do
+          local dx, dy = dir_x[i], dir_y[i]
+          local tx, ty = m.x + dx, m.y + dy
+          if is_walkable(tx, ty, "check_mobs") then
+            local dst = dist(tx, ty, player.x, player.y)
+            if dst < bdst then
+              bdst, bx, by = dst, dx, dy
+            end
+          end
+        end
+
+        mob_walk(m, bx, by)
+        _upd = update_ai_turn
+        p_t = 0
+      end
+    end
+  end
+end
+
+function update_ai_turn()
+  p_t = min(p_t + 0.128, 1)
+
+  for m in all(mobs) do
+    if m != player and m.mov then
+      m.mov(m, p_t)
+    end
+  end
+
+  if p_t == 1 then
+    _upd = update_game
+  end
+end
