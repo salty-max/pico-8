@@ -5,7 +5,7 @@
 bestiary = {
   anim = { 240, 192 },
   atk = { 1, 1 },
-  hp = { 5, 1 }
+  hp = { 5, 2 }
 }
 
 function _init()
@@ -28,16 +28,21 @@ function start_game()
   p = add_mob(1, 1, 1)
 
   add_mob(2, 2, 3)
+  add_mob(2, 1, 10)
+  add_mob(2, 3, 11)
+  add_mob(2, 7, 12)
 
   p_t = 0
 
   windows = {}
+  float = {}
   dialog_box = nil
 end
 
 function _update60()
   t += 1
   _upd()
+  do_floats()
 end
 
 function _draw()

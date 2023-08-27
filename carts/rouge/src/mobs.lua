@@ -9,7 +9,11 @@ function add_mob(_type, _x, _y)
     c = 10,
     flp = false,
     mov = nil,
-    anim = {}
+    anim = {},
+    flash = 0,
+    atk = bestiary.atk[_type],
+    hp = bestiary.hp[_type],
+    hp_max = bestiary.hp[_type]
   }
   for i = 0, 3 do
     add(m.anim, bestiary.anim[_type] + i)
@@ -91,6 +95,14 @@ function move_bump(_m, _mt)
   _m.oy = _m.soy * time
 end
 
-function hit_mob(_ma, _mb)
-  -- TODO
+function hit_mob(_am, _dm)
+  local dmg = _am.atk
+  _dm.hp -= dmg
+  _dm.flash = 10
+
+  add_float("-" .. dmg, _dm.x * 8, _dm.y * 8, 9)
+
+  if _dm.hp <= 0 then
+    del(mobs, _dm)
+  end
 end

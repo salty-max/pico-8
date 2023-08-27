@@ -61,3 +61,26 @@ function show_dialog(_txt)
   dialog_box = add_window(16, start_y, 94, dialog_h, _txt)
   dialog_box.butt = true
 end
+
+function add_float(_s, _x, _y, _c)
+  add(
+    float, {
+      s = _s,
+      x = _x,
+      y = _y,
+      end_y = _y - 10,
+      c = _c,
+      t = 0
+    }
+  )
+end
+
+function do_floats()
+  for f in all(float) do
+    f.y += (f.end_y - f.y) / 10
+    f.t += 1
+    if f.t > 70 then
+      del(float, f)
+    end
+  end
+end

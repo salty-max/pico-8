@@ -15,11 +15,10 @@ function move_player(_dx, _dy)
       -- interact
       if fget(tile, 1) then
         trigger_bump(tile, destx, desty)
-      else
-        sfx(58)
       end
     else
       -- hit mob
+      sfx(58)
       hit_mob(p, mob)
     end
   else
