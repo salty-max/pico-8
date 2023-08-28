@@ -10,6 +10,7 @@ bestiary = {
 
 function _init()
   t = 0
+  d_pal = { 0, 1, 1, 2, 1, 13, 6, 4, 4, 9, 3, 13, 1, 13, 14 }
   dir_x = { -1, 1, 0, 0, 1, 1, -1, -1 }
   dir_y = { 0, 0, -1, 1, -1, 1, 1, -1 }
 
@@ -18,6 +19,7 @@ function _init()
 end
 
 function start_game()
+  fade_perc = 1
   -- buffer for inputs
   butt_buff = -1
   -- array for living mobs
@@ -55,6 +57,7 @@ end
 function _draw()
   _drw()
   draw_windows()
+  check_fade()
   cursor(4, 4)
   color(8)
   for d in all(debug) do

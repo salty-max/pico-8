@@ -12,6 +12,7 @@ end
 
 function update_gover()
   if btnp(5) then
+    fade_out()
     start_game()
   end
 end
