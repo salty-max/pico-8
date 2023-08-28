@@ -29,18 +29,6 @@ function move_player(_dx, _dy)
   end
 end
 
-function update_pturn()
-  buffer_butt()
-
-  p_t = min(p_t + 0.128, 1)
-  player.mov(player, p_t)
-
-  if p_t == 1 then
-    _upd = update_game
-    do_ai()
-  end
-end
-
 function trigger_bump(_tile, _dx, _dy)
   if _tile == 6 then
     -- tablets
@@ -58,4 +46,14 @@ function trigger_bump(_tile, _dx, _dy)
     sfx(62)
     mset(_dx, _dy, 1)
   end
+end
+
+function check_end()
+  if player.hp <= 0 then
+    _upd = update_gover
+    _drw = draw_gover
+    return false
+  end
+
+  return true
 end

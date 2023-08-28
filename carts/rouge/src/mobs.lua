@@ -103,7 +103,9 @@ function hit_mob(_am, _dm)
   add_float("-" .. dmg, _dm.x * 8, _dm.y * 8, 9)
 
   if _dm.hp <= 0 then
+    add(d_mobs, _dm)
     del(mobs, _dm)
+    _dm.die = 20
   end
 end
 
@@ -131,24 +133,11 @@ function do_ai()
           end
         end
 
+        mob_flip(m, bx)
         mob_walk(m, bx, by)
         _upd = update_ai_turn
         p_t = 0
       end
     end
-  end
-end
-
-function update_ai_turn()
-  p_t = min(p_t + 0.128, 1)
-
-  for m in all(mobs) do
-    if m != player and m.mov then
-      m.mov(m, p_t)
-    end
-  end
-
-  if p_t == 1 then
-    _upd = update_game
   end
 end

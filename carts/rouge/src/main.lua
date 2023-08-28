@@ -10,30 +10,28 @@ bestiary = {
 
 function _init()
   t = 0
-
   dir_x = { -1, 1, 0, 0, 1, 1, -1, -1 }
   dir_y = { 0, 0, -1, 1, -1, 1, 1, -1 }
-
-  _upd = update_game
-  _drw = draw_game
 
   debug = {}
   start_game()
 end
 
 function start_game()
+  -- buffer for inputs
   butt_buff = -1
+  -- array for living mobs
+  -- this includes player
   mobs = {}
-
+  -- array for dead mobs
+  d_mobs = {}
+  -- reference for the player mob
   player = add_mob(1, 1, 1)
 
   for y = 0, 15 do
     for x = 0, 15 do
-      for i, m in pairs(bestiary.anim) do
-        if mget(x, y) == m then
-          add_mob(i, x, y)
-          mset(x, y, 1)
-        end
+      if mget(x, y) == 3 then
+        add_mob(2, x, y)
       end
     end
   end
@@ -43,6 +41,9 @@ function start_game()
   windows = {}
   float = {}
   dialog_box = nil
+
+  _upd = update_game
+  _drw = draw_game
 end
 
 function _update60()
