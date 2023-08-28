@@ -84,3 +84,13 @@ function do_floats()
     end
   end
 end
+
+function handle_hp_box()
+  hp_box.txt[1] = "♥" .. player.hp .. "/" .. player.hp_max
+  local hpy = 5
+  if player.y < 8 then
+    hpy = 110
+  end
+
+  hp_box.y += (hpy - hp_box.y) / 5
+end

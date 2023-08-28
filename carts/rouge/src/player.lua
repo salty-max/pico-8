@@ -52,6 +52,7 @@ function check_end()
   if player.hp <= 0 then
     _upd = update_gover
     _drw = draw_gover
+    windows = {}
     fade_out(0.02)
     return false
   end

@@ -44,6 +44,8 @@ function start_game()
   float = {}
   dialog_box = nil
 
+  hp_box = add_window(5, 5, 28, 13, {})
+
   _upd = update_game
   _drw = draw_game
 end
@@ -57,6 +59,7 @@ end
 function _draw()
   _drw()
   draw_windows()
+  handle_hp_box()
   check_fade()
   cursor(4, 4)
   color(8)
