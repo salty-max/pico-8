@@ -15,6 +15,7 @@ function _init()
   dir_y = { 0, 0, -1, 1, -1, 1, 1, -1 }
 
   debug = {}
+
   start_game()
 end
 

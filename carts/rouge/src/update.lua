@@ -36,7 +36,7 @@ function update_ai_turn()
   p_t = min(p_t + 0.128, 1)
 
   for m in all(mobs) do
-    if m != player and m.mov then
+    if m ~= player and m.mov then
       m.mov(m, p_t)
     end
   end

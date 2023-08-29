@@ -15,7 +15,7 @@ function draw_game()
   end
 
   for m in all(mobs) do
-    if m != player then
+    if m ~= player then
       draw_mob(m)
     end
   end
