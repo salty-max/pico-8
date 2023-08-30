@@ -62,10 +62,10 @@ function check_end()
 end
 
 function unfog()
+  local px, py = player.x, player.y
   for x = 0, 15 do
     for y = 0, 15 do
-      local pt = { x = x, y = y }
-      if fog[x][y] == 1 and can_see(player, pt) then
+      if fog[x][y] == 1 and dist(px, py, x, y) <= player.los and los(px, py, x, y) then
         unfog_tile(x, y)
       end
     end

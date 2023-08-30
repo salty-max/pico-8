@@ -193,9 +193,9 @@ function los(x1, y1, x2, y2)
 
   while (x1 == x2 and y1 == y2) == false do
     if not frst and not is_walkable(x1, y1, "sight") then return false end
-    frst, e2 = false, err + err
+    e2, frst = err + err, false
     if e2 > -dy then
-      err += dy
+      err -= dy
       x1 += sx
     end
     if e2 < dx then
