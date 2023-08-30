@@ -31,6 +31,7 @@ function start_game()
   mobs = {}
   -- array for dead mobs
   d_mobs = {}
+  d_map = {}
   -- reference for the player mob
   player = add_mob(1, 1, 1)
 
@@ -46,7 +47,7 @@ function start_game()
   a_t = 0
 
   -- map opacity grid
-  fog = blank_map(1)
+  fog = blank_map(0)
 
   windows = {}
   float = {}
@@ -58,6 +59,7 @@ function start_game()
   _drw = draw_game
 
   unfog()
+  -- calc_dist(player.x, player.y)
 end
 
 function _update60()

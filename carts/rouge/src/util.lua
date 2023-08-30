@@ -73,3 +73,33 @@ function blank_map(dflt)
 
   return m
 end
+
+function calc_dist(tx, ty)
+  local cand, step = {}, 0
+  d_map = blank_map(-1)
+  add(cand, { x = tx, y = ty })
+  d_map[tx][ty] = step
+
+  repeat
+    step += 1
+
+    local cand_new = {}
+    for c in all(cand) do
+      for d = 1, 4 do
+        local dx, dy = c.x + dir_x[d], c.y + dir_y[d]
+        if is_in_bounds(dx, dy) and d_map[dx][dy] == -1 then
+          d_map[dx][dy] = step
+          if is_walkable(dx, dy) then
+            add(cand_new, { x = dx, y = dy })
+          end
+        end
+      end
+    end
+
+    cand = cand_new
+  until #cand == 0
+end
+
+function get_rnd(arr)
+  return arr[1 + flr(rnd(#arr))]
+end

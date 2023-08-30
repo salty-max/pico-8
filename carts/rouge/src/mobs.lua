@@ -151,20 +151,28 @@ function ai_chase(self)
       self.task = ai_wait
       add_float("?", self.x * 8 + 2, self.y * 8, 10)
     else
-      local bdst, bx, by = 999, 0, 0
+      local bdst, cand = 999, {}
+      calc_dist(self.tx, self.ty)
       for i = 1, 4 do
         local dx, dy = dir_x[i], dir_y[i]
         local tx, ty = self.x + dx, self.y + dy
         if is_walkable(tx, ty, "check_mobs") then
-          local dst = dist(tx, ty, self.tx, self.ty)
+          local dst = d_map[tx][ty]
           if dst < bdst then
-            bdst, bx, by = dst, dx, dy
+            cand = {}
+            bdst = dst
+          end
+
+          if dst == bdst then
+            add(cand, { x = dx, y = dy })
           end
         end
       end
-
-      mob_walk(self, bx, by)
-      return true
+      if #cand > 0 then
+        local c = get_rnd(cand)
+        mob_walk(self, c.x, c.y)
+        return true
+      end
     end
   end
 
@@ -175,24 +183,39 @@ function can_see(m1, m2)
   return los(m1.x, m1.y, m2.x, m2.y) and dist(m1.x, m1.y, m2.x, m2.y) <= m1.los
 end
 
+-- check Line of Sight (LoS) between two points using Bresenham's line algorithm.
 function los(x1, y1, x2, y2)
+  -- initial setting of `frst` to denote first point in line check.
   local frst, sx, sy, dx, dy = true
-  --★
+
+  -- if distance between the two points is 1, they have direct sight.
   if dist(x1, y1, x2, y2) == 1 then return true end
+
+  -- determine the direction of movement on the x-axis.
+  -- if starting x is less than ending x, move right. Otherwise, move left.
   if x1 < x2 then
     sx, dx = 1, x2 - x1
   else
     sx, dx = -1, x1 - x2
   end
+
+  -- determine the direction of movement on the y-axis.
+  -- if starting y is less than ending y, move down. Otherwise, move up.
   if y1 < y2 then
     sy, dy = 1, y2 - y1
   else
     sy, dy = -1, y1 - y2
   end
+
+  -- starting error for Bresenham's algorithm.
   local err, e2 = dx - dy
 
+  -- traverse from (x1, y1) to (x2, y2) one grid cell at a time.
   while (x1 == x2 and y1 == y2) == false do
+    -- if the current cell isn't the first and isn't walkable, LoS is blocked.
     if not frst and not is_walkable(x1, y1, "sight") then return false end
+
+    -- calculate error to determine next cell in path.
     e2, frst = err + err, false
     if e2 > -dy then
       err -= dy
@@ -203,5 +226,7 @@ function los(x1, y1, x2, y2)
       y1 += sy
     end
   end
+
+  -- if function reaches here, there's an unblocked line of sight.
   return true
 end

@@ -28,6 +28,7 @@ function update_pturn()
     if check_end() then
       do_ai()
     end
+    -- calc_dist(player.x, player.y)
   end
 end
 

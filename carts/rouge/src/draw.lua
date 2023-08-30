@@ -2,6 +2,14 @@ function draw_game()
   cls(0)
   map()
 
+  -- for x = 0, 15 do
+  --   for y = 0, 15 do
+  --     if d_map[x][y] > 0 then
+  --       print(d_map[x][y], x * 8, y * 8, 8)
+  --     end
+  --   end
+  -- end
+
   for m in all(d_mobs) do
     m.die -= 1
 
