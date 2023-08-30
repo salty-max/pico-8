@@ -2,26 +2,26 @@ function get_frame(a)
   return a[flr(t / 15) % #a + 1]
 end
 
-function draw_spr(_s, _x, _y, _c, _flip)
+function draw_spr(s, x, y, c, flp)
   palt(0, false)
-  pal(6, _c)
-  spr(_s, _x, _y, 1, 1, _flip)
+  pal(6, c)
+  spr(s, x, y, 1, 1, flp)
   pal()
 end
 
-function rect_fill(_x, _y, _w, _h, _c)
-  rectfill(_x, _y, _x + max(_w - 1, 0), _y + max(_h - 1, 0), _c)
+function rect_fill(x, y, w, h, c)
+  rectfill(x, y, x + max(w - 1, 0), y + max(h - 1, 0), c)
 end
 
-function o_print_8(_s, _x, _y, _c, _c2)
+function o_print_8(s, x, y, c, oc)
   for i = 1, 8 do
-    print(_s, _x + dir_x[i], _y + dir_y[i], _c2)
+    print(s, x + dir_x[i], y + dir_y[i], oc)
   end
-  print(_s, _x, _y, _c)
+  print(s, x, y, c)
 end
 
-function dist(_fx, _fy, _tx, _ty)
-  local dx, dy = _fx - _tx, _fy - _ty
+function dist(fx, fy, tx, ty)
+  local dx, dy = fx - tx, fy - ty
   return sqrt(dx * dx + dy * dy)
 end
 
@@ -37,14 +37,14 @@ function do_fade()
   end
 end
 
-function fade_out(_spd, _dur)
-  if (_spd == nil) _spd = 0.04
-  if (_dur == nil) _dur = 0
+function fade_out(spd, dur)
+  if (spd == nil) spd = 0.04
+  if (dur == nil) dur = 0
   repeat
-    fade_perc = min(fade_perc + _spd, 1)
+    fade_perc = min(fade_perc + spd, 1)
     do_fade()
     flip()until fade_perc == 1
-  wait(_dur)
+  wait(dur)
 end
 
 function check_fade()
@@ -54,8 +54,8 @@ function check_fade()
   end
 end
 
-function wait(_dur)
+function wait(dur)
   repeat
-    _dur -= 1
-    flip()until _dur < 0
+    dur -= 1
+    flip()until dur < 0
 end

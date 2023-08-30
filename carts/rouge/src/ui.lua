@@ -1,10 +1,10 @@
-function add_window(_x, _y, _w, _h, _txt)
+function add_window(wx, wy, ww, wh, txt)
   local w = {
-    x = _x,
-    y = _y,
-    w = _w,
-    h = _h,
-    txt = _txt
+    x = wx,
+    y = wy,
+    w = ww,
+    h = wh,
+    txt = txt
   }
 
   add(windows, w)
@@ -49,27 +49,27 @@ function draw_windows()
   end
 end
 
-function show_msg(_txt, _dur)
-  local width = (#_txt + 2) * 4 + 7
-  local w = add_window(63 - width / 2, 50, width, 13, { " " .. _txt })
-  w.dur = _dur
+function show_msg(txt, dur)
+  local width = (#txt + 2) * 4 + 7
+  local w = add_window(63 - width / 2, 50, width, 13, { " " .. txt })
+  w.dur = dur
 end
 
-function show_dialog(_txt)
-  local dialog_h = #_txt * 6 + 7
+function show_dialog(txt)
+  local dialog_h = #txt * 6 + 7
   local start_y = (128 - dialog_h) / 2
-  dialog_box = add_window(16, start_y, 94, dialog_h, _txt)
+  dialog_box = add_window(16, start_y, 94, dialog_h, txt)
   dialog_box.butt = true
 end
 
-function add_float(_s, _x, _y, _c)
+function add_float(txt, fx, fy, col)
   add(
     float, {
-      s = _s,
-      x = _x,
-      y = _y,
-      end_y = _y - 10,
-      c = _c,
+      s = txt,
+      x = fx,
+      y = fy,
+      end_y = fy - 10,
+      c = col,
       t = 0
     }
   )

@@ -14,10 +14,10 @@ function buffer_butt()
   end
 end
 
-function handle_butt(_b)
-  if _b < 0 then return end
+function handle_butt(b)
+  if b < 0 then return end
 
-  if _b >= 0 and _b < 4 then
-    move_player(dir_x[_b + 1], dir_y[_b + 1])
+  if b >= 0 and b < 4 then
+    move_player(dir_x[b + 1], dir_y[b + 1])
   end
 end

@@ -1,15 +1,15 @@
-function move_player(_dx, _dy)
-  local destx, desty = player.x + _dx, player.y + _dy
+function move_player(dx, dy)
+  local destx, desty = player.x + dx, player.y + dy
   local tile = mget(destx, desty)
 
   if is_walkable(destx, desty, "check_mobs") then
     sfx(63)
-    mob_walk(player, _dx, _dy)
+    mob_walk(player, dx, dy)
     p_t = 0
     _upd = update_pturn
   else
     -- not walkable
-    mob_bump(player, _dx, _dy)
+    mob_bump(player, dx, dy)
     p_t = 0
     _upd = update_pturn
 
@@ -27,22 +27,22 @@ function move_player(_dx, _dy)
   end
 end
 
-function trigger_bump(_tile, _dx, _dy)
-  if _tile == 6 then
+function trigger_bump(tile, dx, dy)
+  if tile == 6 then
     -- tablets
     show_dialog({ "welcome to my lair", "", "climb the tower", "if you dare", "", "bwa ha ha ha ha", "*cough* *cough*" }, 120)
-  elseif _tile == 7 or _tile == 8 then
+  elseif tile == 7 or tile == 8 then
     -- pots
     sfx(59)
-    mset(_dx, _dy, 1)
-  elseif _tile == 10 or _tile == 12 then
+    mset(dx, dy, 1)
+  elseif tile == 10 or tile == 12 then
     -- chests
     sfx(61)
-    mset(_dx, _dy, _tile - 1)
-  elseif _tile == 13 then
+    mset(dx, dy, tile - 1)
+  elseif tile == 13 then
     -- doors
     sfx(62)
-    mset(_dx, _dy, 1)
+    mset(dx, dy, 1)
   end
 end
 
