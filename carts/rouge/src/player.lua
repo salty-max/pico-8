@@ -52,6 +52,7 @@ function check_end()
     _drw = draw_gover
     windows = {}
     fade_out(0.02)
+    reload(0x2000, 0x2000, 0x1000)
     return false
   end
 

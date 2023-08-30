@@ -33,8 +33,9 @@ function start_game()
 
   for y = 0, 15 do
     for x = 0, 15 do
-      if mget(x, y) == 3 then
+      if mget(x, y) == 192 then
         add_mob(2, x, y)
+        mset(x, y, 1)
       end
     end
   end
@@ -55,12 +56,12 @@ function _update60()
   t += 1
   _upd()
   do_floats()
+  handle_hp_box()
 end
 
 function _draw()
   _drw()
   draw_windows()
-  handle_hp_box()
   check_fade()
   cursor(4, 4)
   color(8)

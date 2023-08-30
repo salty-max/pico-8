@@ -108,12 +108,17 @@ function hit_mob(am, dm)
 end
 
 function do_ai()
+  local moving
   for m in all(mobs) do
     if m != player then
-      debug[1] = los(m.x, m.y, player.x, player.y)
       m.mov = nil
-      m.task(m)
+      moving = m.task(m)
     end
+  end
+
+  if moving then
+    _upd = update_ai_turn
+    p_t = 0
   end
 end
 
@@ -123,16 +128,21 @@ function ai_wait(m)
     m.task = ai_chase
     m.tx, m.ty = player.x, player.y
     add_float("!", m.x * 8 + 2, m.y * 8, 10)
+
+    return true
   end
+
+  return false
 end
 
 function ai_chase(m)
   if dist(m.x, m.y, player.x, player.y) == 1 then
     -- attack player
-    dx, dy = player.x - m.x, player.y - m.y
+    local dx, dy = player.x - m.x, player.y - m.y
     mob_bump(m, dx, dy)
     hit_mob(m, player)
     sfx(57)
+    return true
   else
     -- move towards player
     if los(m.x, m.y, player.x, player.y) then
@@ -157,10 +167,11 @@ function ai_chase(m)
       end
 
       mob_walk(m, bx, by)
-      _upd = update_ai_turn
-      p_t = 0
+      return true
     end
   end
+
+  return false
 end
 
 function los(x1, y1, x2, y2)
