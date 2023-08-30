@@ -62,9 +62,10 @@ function check_end()
 end
 
 function unfog()
+  local px, py = player.x, player.y
   for x = 0, 15 do
     for y = 0, 15 do
-      if los(player.x, player.y, x, y) then
+      if dist(px, py, x, y) <= player.los and los(px, py, x, y) then
         unfog_tile(x, y)
       end
     end

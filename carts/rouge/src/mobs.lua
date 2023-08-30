@@ -11,6 +11,7 @@ function add_mob(type, mx, my)
     atk = bestiary.atk[type],
     hp = bestiary.hp[type],
     hp_max = bestiary.hp[type],
+    los = bestiary.los[type],
     task = ai_wait
   }
 
@@ -127,7 +128,7 @@ function do_ai()
 end
 
 function ai_wait(m)
-  if los(m.x, m.y, player.x, player.y) then
+  if can_see(m, player) then
     -- aggro
     m.task = ai_chase
     m.tx, m.ty = player.x, player.y
@@ -149,7 +150,7 @@ function ai_chase(m)
     return true
   else
     -- move towards player
-    if los(m.x, m.y, player.x, player.y) then
+    if can_see(m, player) then
       m.tx, m.ty = player.x, player.y
     end
 
@@ -176,6 +177,10 @@ function ai_chase(m)
   end
 
   return false
+end
+
+function can_see(m1, m2)
+  return los(m1.x, m1.y, m2.x, m2.y) and dist(m1.x, m1.y, m2.x, m2.y) <= m1.los
 end
 
 function los(x1, y1, x2, y2)

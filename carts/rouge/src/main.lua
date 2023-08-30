@@ -3,14 +3,16 @@
 -- 2: slime
 
 bestiary = {
-  anim = { 240, 192 },
-  atk = { 1, 1 },
-  hp = { 5, 2 }
+  anim = { 240, 192 }, -- first frame of animation
+  atk = { 1, 1 }, -- attack power
+  hp = { 5, 2 }, -- health
+  los = { 4, 4 } -- line of sight
 }
 
 function _init()
   t = 0
   d_pal = { 0, 1, 1, 2, 1, 13, 6, 4, 4, 9, 3, 13, 1, 13, 14 }
+  -- fade palette
   dir_x = { -1, 1, 0, 0, 1, 1, -1, -1 }
   dir_y = { 0, 0, -1, 1, -1, 1, 1, -1 }
 
@@ -20,6 +22,7 @@ function _init()
 end
 
 function start_game()
+  -- fade percentage (1 ==  fully opaque)
   fade_perc = 1
   -- buffer for inputs
   butt_buff = -1
