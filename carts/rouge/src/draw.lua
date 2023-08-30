@@ -14,10 +14,8 @@ function draw_game()
     end
   end
 
-  for m in all(mobs) do
-    if m != player then
-      draw_mob(m)
-    end
+  for i = #mobs, 1, -1 do
+    draw_mob(mobs[i])
   end
 
   for x = 0, 15 do
@@ -27,8 +25,6 @@ function draw_game()
       end
     end
   end
-
-  draw_mob(player)
 
   for f in all(float) do
     o_print_8(f.s, f.x, f.y, f.c, 0)

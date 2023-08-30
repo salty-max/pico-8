@@ -30,7 +30,7 @@ function draw_windows()
     end
     clip()
 
-    if w.dur != nil then
+    if w.dur then
       w.dur -= 1
       if w.dur <= 0 then
         local dif = wh / 4

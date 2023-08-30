@@ -43,7 +43,7 @@ function start_game()
     end
   end
 
-  p_t = 0
+  a_t = 0
 
   -- map opacity grid
   fog = blank_map(1)

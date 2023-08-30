@@ -5,24 +5,24 @@ function move_player(dx, dy)
   if is_walkable(destx, desty, "check_mobs") then
     sfx(63)
     mob_walk(player, dx, dy)
-    p_t = 0
+    a_t = 0
     _upd = update_pturn
   else
     -- not walkable
     mob_bump(player, dx, dy)
-    p_t = 0
+    a_t = 0
     _upd = update_pturn
 
     local mob = get_mob_at(destx, desty)
-    if mob == false then
+    if mob then
+      -- hit mob
+      sfx(58)
+      hit_mob(player, mob)
+    else
       -- interact
       if fget(tile, 1) then
         trigger_bump(tile, destx, desty)
       end
-    else
-      -- hit mob
-      sfx(58)
-      hit_mob(player, mob)
     end
   end
 
@@ -62,10 +62,10 @@ function check_end()
 end
 
 function unfog()
-  local px, py = player.x, player.y
   for x = 0, 15 do
     for y = 0, 15 do
-      if dist(px, py, x, y) <= player.los and los(px, py, x, y) then
+      local pt = { x = x, y = y }
+      if fog[x][y] == 1 and can_see(player, pt) then
         unfog_tile(x, y)
       end
     end

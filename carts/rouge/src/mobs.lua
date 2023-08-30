@@ -33,7 +33,7 @@ function get_mob_at(x, y)
 end
 
 function is_walkable(x, y, mode)
-  if mode == nil then mode = "" end
+  mode = mode or ""
   if is_in_bounds(x, y) then
     local tile = mget(x, y)
     if mode == "sight" then
@@ -75,27 +75,19 @@ function mob_bump(m, dx, dy)
 end
 
 function mob_flip(m, dx)
-  if dx < 0 then
-    m.flp = true
-  elseif dx > 0 then
-    m.flp = false
-  end
+  m.flp = dx == 0 and m.flp or dx < 0
 end
 
-function move_walk(m, mt)
-  m.ox = m.sox * (1 - mt)
-  m.oy = m.soy * (1 - mt)
+function move_walk(self)
+  local time = 1 - a_t
+  self.ox = self.sox * time
+  self.oy = self.soy * time
 end
 
-function move_bump(m, mt)
-  local time = mt
-
-  if mt > 0.5 then
-    time = 1 - mt
-  end
-
-  m.ox = m.sox * time
-  m.oy = m.soy * time
+function move_bump(self)
+  local time = a_t > 0.5 and 1 - a_t or a_t
+  self.ox = self.sox * time
+  self.oy = self.soy * time
 end
 
 function hit_mob(am, dm)
@@ -117,22 +109,22 @@ function do_ai()
   for m in all(mobs) do
     if m != player then
       m.mov = nil
-      moving = m.task(m) or moving
+      moving = m:task() or moving
     end
   end
 
   if moving then
     _upd = update_ai_turn
-    p_t = 0
+    a_t = 0
   end
 end
 
-function ai_wait(m)
-  if can_see(m, player) then
+function ai_wait(self)
+  if can_see(self, player) then
     -- aggro
-    m.task = ai_chase
-    m.tx, m.ty = player.x, player.y
-    add_float("!", m.x * 8 + 2, m.y * 8, 10)
+    self.task = ai_chase
+    self.tx, self.ty = player.x, player.y
+    add_float("!", self.x * 8 + 2, self.y * 8, 10)
 
     return true
   end
@@ -140,38 +132,38 @@ function ai_wait(m)
   return false
 end
 
-function ai_chase(m)
-  if dist(m.x, m.y, player.x, player.y) == 1 then
+function ai_chase(self)
+  if dist(self.x, self.y, player.x, player.y) == 1 then
     -- attack player
-    local dx, dy = player.x - m.x, player.y - m.y
-    mob_bump(m, dx, dy)
-    hit_mob(m, player)
+    local dx, dy = player.x - self.x, player.y - self.y
+    mob_bump(self, dx, dy)
+    hit_mob(self, player)
     sfx(57)
     return true
   else
     -- move towards player
-    if can_see(m, player) then
-      m.tx, m.ty = player.x, player.y
+    if can_see(self, player) then
+      self.tx, self.ty = player.x, player.y
     end
 
-    if m.x == m.tx and m.y == m.ty then
+    if self.x == self.tx and self.y == self.ty then
       --de aggro
-      m.task = ai_wait
-      add_float("?", m.x * 8 + 2, m.y * 8, 10)
+      self.task = ai_wait
+      add_float("?", self.x * 8 + 2, self.y * 8, 10)
     else
       local bdst, bx, by = 999, 0, 0
       for i = 1, 4 do
         local dx, dy = dir_x[i], dir_y[i]
-        local tx, ty = m.x + dx, m.y + dy
+        local tx, ty = self.x + dx, self.y + dy
         if is_walkable(tx, ty, "check_mobs") then
-          local dst = dist(tx, ty, m.tx, m.ty)
+          local dst = dist(tx, ty, self.tx, self.ty)
           if dst < bdst then
             bdst, bx, by = dst, dx, dy
           end
         end
       end
 
-      mob_walk(m, bx, by)
+      mob_walk(self, bx, by)
       return true
     end
   end
@@ -188,32 +180,27 @@ function los(x1, y1, x2, y2)
   --★
   if dist(x1, y1, x2, y2) == 1 then return true end
   if x1 < x2 then
-    sx = 1
-    dx = x2 - x1
+    sx, dx = 1, x2 - x1
   else
-    sx = -1
-    dx = x1 - x2
+    sx, dx = -1, x1 - x2
   end
   if y1 < y2 then
-    sy = 1
-    dy = y2 - y1
+    sy, dy = 1, y2 - y1
   else
-    sy = -1
-    dy = y1 - y2
+    sy, dy = -1, y1 - y2
   end
-  local err, e2 = dx - dy, nil
+  local err, e2 = dx - dy
 
   while (x1 == x2 and y1 == y2) == false do
     if not frst and not is_walkable(x1, y1, "sight") then return false end
-    frst = false
-    e2 = err + err
+    frst, e2 = false, err + err
     if e2 > -dy then
-      err = err - dy
-      x1 = x1 + sx
+      err += dy
+      x1 += sx
     end
     if e2 < dx then
-      err = err + dx
-      y1 = y1 + sy
+      err += dx
+      y1 += sy
     end
   end
   return true
