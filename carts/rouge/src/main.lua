@@ -42,6 +42,9 @@ function start_game()
 
   p_t = 0
 
+  -- map opacity grid
+  fog = blank_map(1)
+
   windows = {}
   float = {}
   dialog_box = nil
@@ -50,6 +53,8 @@ function start_game()
 
   _upd = update_game
   _drw = draw_game
+
+  unfog()
 end
 
 function _update60()
@@ -63,6 +68,7 @@ function _draw()
   _drw()
   draw_windows()
   check_fade()
+
   cursor(4, 4)
   color(8)
   for d in all(debug) do

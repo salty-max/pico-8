@@ -20,6 +20,14 @@ function draw_game()
     end
   end
 
+  for x = 0, 15 do
+    for y = 0, 15 do
+      if fog[x][y] == 1 then
+        rect_fill(x * 8, y * 8, 8, 8, 0)
+      end
+    end
+  end
+
   draw_mob(player)
 
   for f in all(float) do

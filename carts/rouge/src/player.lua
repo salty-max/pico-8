@@ -25,6 +25,8 @@ function move_player(dx, dy)
       hit_mob(player, mob)
     end
   end
+
+  unfog()
 end
 
 function trigger_bump(tile, dx, dy)
@@ -57,4 +59,26 @@ function check_end()
   end
 
   return true
+end
+
+function unfog()
+  for x = 0, 15 do
+    for y = 0, 15 do
+      if los(player.x, player.y, x, y) then
+        unfog_tile(x, y)
+      end
+    end
+  end
+end
+
+function unfog_tile(x, y)
+  fog[x][y] = 0
+  if is_walkable(x, y, "sight") then
+    for i = 1, 4 do
+      local tx, ty = x + dir_x[i], y + dir_y[i]
+      if is_in_bounds(tx, ty) and not is_walkable(tx, ty, "sight") then
+        fog[tx][ty] = 0
+      end
+    end
+  end
 end

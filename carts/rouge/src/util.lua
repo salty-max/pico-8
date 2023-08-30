@@ -59,3 +59,17 @@ function wait(dur)
     dur -= 1
     flip()until dur < 0
 end
+
+function blank_map(dflt)
+  local m = {}
+  if dflt == nil then dflt = 0 end
+
+  for x = 0, 15 do
+    m[x] = {}
+    for y = 0, 15 do
+      m[x][y] = dflt
+    end
+  end
+
+  return m
+end

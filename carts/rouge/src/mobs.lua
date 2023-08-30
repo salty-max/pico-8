@@ -35,11 +35,15 @@ function is_walkable(x, y, mode)
   if mode == nil then mode = "" end
   if is_in_bounds(x, y) then
     local tile = mget(x, y)
-    if not fget(tile, 0) then
-      if mode == "check_mobs" then
-        return not get_mob_at(x, y)
+    if mode == "sight" then
+      return not fget(tile, 2)
+    else
+      if not fget(tile, 0) then
+        if mode == "check_mobs" then
+          return not get_mob_at(x, y)
+        end
+        return true
       end
-      return true
     end
   end
 
@@ -112,7 +116,7 @@ function do_ai()
   for m in all(mobs) do
     if m != player then
       m.mov = nil
-      moving = m.task(m)
+      moving = m.task(m) or moving
     end
   end
 
