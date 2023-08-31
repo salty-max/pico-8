@@ -22,10 +22,20 @@ function draw_windows()
     wy += 4
 
     clip(wx, wy, ww - 8, wh - 8)
+    if w.cur_mode then
+      wx += 6
+    end
     for i = 1, #w.txt do
-      local txt = w.txt[i]
+      local txt, c = w.txt[i], 6
+      if w.col and w.col[i] then
+        c = w.col[i]
+      end
+      print(txt, wx, wy, c)
 
-      print(txt, wx, wy, 6)
+      if i == w.cur then
+        spr(64, wx - 5 + min(sin(time())), wy)
+      end
+
       wy += 6
     end
     clip()
@@ -43,7 +53,7 @@ function draw_windows()
       end
     else
       if w.butt then
-        o_print_8("❎", wx + ww - 15, wy - 1 - max(0, sin(time())), 6, 0)
+        o_print_8("❎", wx + ww - 15, wy - 1 - max(sin(time())), 6, 0)
       end
     end
   end
@@ -93,4 +103,33 @@ function handle_hp_box()
   end
 
   hp_box.y += (hpy - hp_box.y) / 5
+end
+
+function show_inv()
+  local txt = {}
+  _upd = update_inv
+  add(txt, "wooden stick")
+  add(txt, "torn shirt")
+  add(txt, "……………………………………")
+  for i = 1, 6 do
+    if inv[i] then
+      add(txt, items.name[inv[i]])
+    else
+      add(txt, "...")
+    end
+  end
+  inv_box = add_window(5, 17, 84, 62, txt)
+  inv_box.cur_mode = true
+  inv_box.cur = 1
+  inv_box.col = {6, 6, 5, 6, 6, 6, 5, 5, 5}
+
+  stat_box = add_window(5, 5, 84, 13, {"atk: 1  def: 1"})
+end
+
+function move_menu(w)
+  if btnp(2) then
+    w.cur = max(1, w.cur - 1)
+  elseif btnp(3) then
+    w.cur = min(#w.txt, w.cur + 1)
+  end
 end

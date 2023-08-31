@@ -17,7 +17,9 @@ end
 function handle_butt(b)
   if b < 0 then return end
 
-  if b >= 0 and b < 4 then
+  if b < 4 then
     move_player(dir_x[b + 1], dir_y[b + 1])
+  elseif b == 5 then
+    show_inv()
   end
 end

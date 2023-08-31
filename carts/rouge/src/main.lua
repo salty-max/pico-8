@@ -9,6 +9,10 @@ bestiary = {
   los = { 4, 4 } -- line of sight
 }
 
+items = {
+  name = { "red potion", "iron sword", "leather armor" },
+}
+
 function _init()
   t = 0
   d_pal = { 0, 1, 1, 2, 1, 13, 6, 4, 4, 9, 3, 13, 1, 13, 14 }
@@ -45,6 +49,11 @@ function start_game()
   end
 
   a_t = 0
+
+  inv, eqp = {}, {}
+  take_item(1)
+  take_item(2)
+  take_item(3)
 
   -- map opacity grid
   fog = blank_map(0)

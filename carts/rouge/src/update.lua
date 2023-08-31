@@ -47,3 +47,13 @@ function update_ai_turn()
     check_end()
   end
 end
+
+function update_inv()
+  if btnp(4) then
+    _upd = update_game
+    inv_box.dur = 0
+    stat_box.dur = 0
+  end
+
+  move_menu(inv_box)
+end
