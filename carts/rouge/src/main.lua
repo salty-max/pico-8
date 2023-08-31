@@ -1,6 +1,6 @@
 -- bestiary indexes
--- 1: player
--- 2: slime
+-- 1: player, 240, 1 ,5, 4
+-- 2: slime, 192, 1, 2, 4
 
 bestiary = {
   anim = { 240, 192 }, -- first frame of animation
@@ -10,7 +10,8 @@ bestiary = {
 }
 
 items = {
-  name = { "red potion", "iron sword", "leather armor" },
+  name = { "red potion", "iron sword", "leather armor", "sausage", "kunai" },
+  kind = { "drk", "wep", "arm", "fud", "thr" }
 }
 
 function _init()
@@ -54,6 +55,8 @@ function start_game()
   take_item(1)
   take_item(2)
   take_item(3)
+  take_item(4)
+  take_item(5)
 
   -- map opacity grid
   fog = blank_map(0)

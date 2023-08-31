@@ -50,10 +50,23 @@ end
 
 function update_inv()
   if btnp(4) then
-    _upd = update_game
-    inv_box.dur = 0
-    stat_box.dur = 0
+    if curr_box == inv_box then
+      _upd = update_game
+      inv_box.dur = 0
+      stat_box.dur = 0
+    elseif curr_box == itm_menu_box then
+      itm_menu_box.dur = 0
+      curr_box = inv_box
+    end
   end
 
-  move_menu(inv_box)
+  if btnp(5) then
+    if curr_box == inv_box and inv_box.cur != 3 then
+      show_use_menu()
+    elseif curr_box == itm_menu_box then
+      -- use item
+    end
+  end
+
+  move_menu(curr_box)
 end

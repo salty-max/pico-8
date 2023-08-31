@@ -22,7 +22,7 @@ function draw_windows()
     wy += 4
 
     clip(wx, wy, ww - 8, wh - 8)
-    if w.cur_mode then
+    if w.cur then
       wx += 6
     end
     for i = 1, #w.txt do
@@ -106,30 +106,72 @@ function handle_hp_box()
 end
 
 function show_inv()
-  local txt = {}
+  local txt, col, itm, eqt = {}, {}
   _upd = update_inv
-  add(txt, "wooden stick")
-  add(txt, "torn shirt")
+  for i = 1, 2 do
+    itm = eqp[i]
+    if eqp[i] then
+      eqt = items.name[itm]
+      add(col, 6)
+    else
+      eqt = i == 1 and "[weapon]" or "[armor]"
+      add(col, 5)
+    end
+    add(txt, eqt)
+  end
   add(txt, "……………………………………")
+  add(col, 6)
   for i = 1, 6 do
+    itm = inv[i]
     if inv[i] then
-      add(txt, items.name[inv[i]])
+      add(txt, items.name[itm])
+      add(col, 6)
     else
       add(txt, "...")
+      add(col, 5)
     end
   end
   inv_box = add_window(5, 17, 84, 62, txt)
-  inv_box.cur_mode = true
   inv_box.cur = 1
-  inv_box.col = {6, 6, 5, 6, 6, 6, 5, 5, 5}
+  inv_box.col = col
+  curr_box = inv_box
 
   stat_box = add_window(5, 5, 84, 13, {"atk: 1  def: 1"})
 end
 
 function move_menu(w)
   if btnp(2) then
-    w.cur = max(1, w.cur - 1)
+    w.cur -= 1
+    w.cur = (curr_box == inv_box and w.cur == 3) and 2 or w.cur
   elseif btnp(3) then
-    w.cur = min(#w.txt, w.cur + 1)
+    w.cur += 1
+    w.cur = (curr_box == inv_box and w.cur == 3) and 4 or w.cur
   end
+  w.cur = (w.cur - 1) % #w.txt + 1
+end
+
+function show_use_menu()
+  local idx = inv_box.cur
+  local itm = idx < 3 and eqp[idx] or inv[idx - 3]
+  if itm == nil then return end
+
+  local knd, txt = items.kind[itm], {}
+
+  if knd == "wep" or knd == "arm" then
+    add(txt, "equip")
+  elseif knd == "fud" then
+    add(txt, "eat")
+  elseif knd == "drk" then
+    add(txt, "drink")
+  end
+
+  if knd == "thr" or knd == "fud" then
+    add(txt, "throw")
+  end
+
+  add(txt, "drop")
+
+  itm_menu_box = add_window(84, idx * 6 + 11, 36, 7 + #txt * 6, txt)
+  itm_menu_box.cur = 1
+  curr_box = itm_menu_box
 end
