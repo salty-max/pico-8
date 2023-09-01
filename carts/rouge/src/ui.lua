@@ -177,7 +177,7 @@ function show_use_menu()
 end
 
 function use_item()
-  local idx, after = inv_box.cur, "back"
+  local idx, back = inv_box.cur, true
   local itm = idx < 3 and eqp[idx] or inv[idx - 3]
   local verb = itm_menu_box.txt[itm_menu_box.cur]
 
@@ -197,31 +197,24 @@ function use_item()
     consume(player, itm)
     inv[idx - 3] = nil
     player.mov = nil
-    after = "turn"
-  elseif verb == "throw" then
-    _upd = update_throw
-    after = "throw"
-  end
-
-  if after == "close" then
-    inv_box.dur = 0
-    stat_box.dur = 0
-    _upd = update_game
-  elseif after == "throw" then
-    inv_box.dur = 0
-    stat_box.dur = 0
-    _upd = update_throw
-  elseif after == "turn" then
-    inv_box.dur = 0
-    stat_box.dur = 0
+    back = false
     a_t = 0
     _upd = update_pturn
-  elseif after == "back" then
-    curr_box = inv_box
+  elseif verb == "throw" then
+    thr_slot = idx - 3
+    back = false
+    _upd = update_throw
+  end
+
+  itm_menu_box.dur = 0
+
+  if back then
     del(windows, inv_box)
     del(windows, stat_box)
     show_inv()
     inv_box.cur = idx
+  else
+    inv_box.dur = 0
+    stat_box.dur = 0
   end
-  itm_menu_box.dur = 0
 end

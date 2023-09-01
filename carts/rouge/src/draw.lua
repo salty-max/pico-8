@@ -28,20 +28,21 @@ function draw_game()
 
   if _upd == update_throw then
     local tx, ty = throw_tile()
-    local lx1, ly1 = player.x * 8 + 4 + thr_dx * 4, player.y * 8 + 4 + thr_dy * 4
-    local lx2, ly2 = mid(0, tx * 8 + 4, 127), mid(0, ty * 8 + 4, 127)
-    line(lx1 + thr_dy, ly1 + thr_dx, lx2 + thr_dy, ly2 + thr_dx, 0)
-    line(lx1 - thr_dy, ly1 - thr_dx, lx2 - thr_dy, ly2 - thr_dx, 0)
+    local lx1, ly1 = player.x * 8 + 3 + thr_dx * 4, player.y * 8 + 3 + thr_dy * 4
+    local lx2, ly2 = mid(0, tx * 8 + 3, 127), mid(0, ty * 8 + 3, 127)
+  
+    rectfill(lx1 + thr_dy, ly1 + thr_dx, lx2 - thr_dy, ly2 - thr_dx, 0)
     
-    if flr(t / 7) % 2 == 0 then
-      fillp(0b1010010110100101)
-    else
-      fillp(0b0101101001011010)
-    end
+    local thr_anim, mob = flr(t / 7) % 2 == 0, get_mob_at(tx, ty)
 
+    fillp(thr_anim and 0b1010010110100101 or ~0b1010010110100101)
     line(lx1, ly1, lx2, ly2, 7)
     fillp()
     o_print_8("+", lx2 - 1, ly2 - 2, 7, 0)
+
+    if mob and thr_anim  then
+      mob.flash = 1
+    end
   end
 
   for x = 0, 15 do

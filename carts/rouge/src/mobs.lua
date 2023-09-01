@@ -93,8 +93,8 @@ function move_bump(self)
   self.oy = self.soy * time
 end
 
-function hit_mob(am, dm)
-  local dmg = am.atk
+function hit_mob(am, dm, raw)
+  local dmg = am and am.atk or raw
   local def = dm.def_min + flr(rnd(dm.def_max - dm.def_min + 1))
   dmg -= min(def, dmg)
 

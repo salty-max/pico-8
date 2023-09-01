@@ -85,7 +85,25 @@ function unfog_tile(x, y)
 end
 
 function throw()
-  _upd = update_game
+  local itm, tx, ty = inv[thr_slot], throw_tile()
+
+  if is_in_bounds(tx, ty) then
+    local mob = get_mob_at(tx, ty)
+
+    if mob then 
+      if items.kind[itm] == "fud" or items.kind[itm] == "drk" then
+        consume(mob, itm)
+      else
+        sfx(58)
+        hit_mob(nil, mob, items.stat_1[itm])
+      end
+    end
+  end
+
+  mob_bump(player, thr_dx, thr_dy)
+  inv[thr_slot] = nil
+  a_t = 0
+  _upd = update_pturn
 end
 
 function throw_tile()

@@ -3,6 +3,7 @@
 -- 2: slime, 192, 1, 2, 4
 
 bestiary = {
+  name = { "player", "slime" },
   anim = { 240, 192 }, -- first frame of animation
   atk = { 1, 1 }, -- attack power
   def = { 0, 0 }, -- defense rating
@@ -13,7 +14,7 @@ bestiary = {
 items = {
   name = { "iron sword", "leather armor", "sausage", "red potion", "kunai", "wooden stick" },
   kind = { "wep", "arm", "fud", "drk", "thr", "wep" },
-  stat_1 = {2, 0, 1, 1, 1, 1},
+  stat_1 = {2, 0, 1, 1, 2, 1},
   stat_2 = {0, 2, 2, 5, 0, 0},
 }
 
@@ -54,7 +55,7 @@ function start_game()
 
   a_t = 0
 
-  thr_dir, thr_dx, thr_dy = 2, -1, -1
+  thr_dx, thr_dy = 1, 0
 
   inv, eqp = {}, {}
   take_item(1)

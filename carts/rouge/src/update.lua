@@ -77,14 +77,13 @@ end
 function update_throw()
   local b = get_butt()
   if b >= 0 and b < 4 then
-    thr_dir = b
+    thr_dx, thr_dy = dir_x[b + 1], dir_y[b + 1]
   end
 
-  thr_dx, thr_dy = dir_x[thr_dir + 1], dir_y[thr_dir + 1]
-
   if b == 4 then
-    throw()
+    a_t = 0
+    _upd = update_pturn
   elseif b == 5 then
-    _upd = update_game
+    throw()
   end
 end
