@@ -13,8 +13,8 @@ bestiary = {
 items = {
   name = { "iron sword", "leather armor", "sausage", "red potion", "kunai", "wooden stick" },
   kind = { "wep", "arm", "fud", "drk", "thr", "wep" },
-  stat_1 = {2, 0, 2, 5, 1, 1},
-  stat_2 = {0, 2, 0, 0, 0, 0},
+  stat_1 = {2, 0, 1, 1, 1, 1},
+  stat_2 = {0, 2, 2, 5, 0, 0},
 }
 
 function _init()

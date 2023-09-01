@@ -21,7 +21,10 @@ function update_pturn()
   buffer_butt()
 
   a_t = min(a_t + 0.128, 1)
-  player:mov()
+  
+  if player.mov then
+    player:mov()
+  end
 
   if a_t == 1 then
     _upd = update_game

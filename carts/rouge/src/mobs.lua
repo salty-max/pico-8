@@ -253,3 +253,19 @@ function update_stats()
   player.def_min = def_min
   player.def_max = def_max
 end
+
+function consume(mob, itm)
+  local eft = items.stat_1[itm]
+
+  if eft == 1 then
+    -- heal
+    heal_mob(mob, items.stat_2[itm])
+  end
+end
+
+function heal_mob(mob, amt)
+  amt = min(amt, mob.hp_max - mob.hp)
+  mob.hp += amt
+  mob.flash = 10
+  add_float("+"..amt, mob.x * 8, mob.y * 8, 11)
+end

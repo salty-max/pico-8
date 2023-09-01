@@ -194,13 +194,23 @@ function use_item()
     eqp[slot] = itm
     update_stats()
   elseif verb == "eat" or verb == "drink" then
+    consume(player, itm)
+    inv[idx - 3] = nil
+    player.mov = nil
+    after = "turn"
   elseif verb == "throw" then
+    after = "close"
   end
 
   if after == "close" then
     inv_box.dur = 0
     stat_box.dur = 0
     _upd = update_game
+  elseif after == "turn" then
+    inv_box.dur = 0
+    stat_box.dur = 0
+    a_t = 0
+    _upd = update_pturn
   elseif after == "back" then
     curr_box = inv_box
     del(windows, inv_box)
