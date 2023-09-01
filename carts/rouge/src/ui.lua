@@ -199,13 +199,18 @@ function use_item()
     player.mov = nil
     after = "turn"
   elseif verb == "throw" then
-    after = "close"
+    _upd = update_throw
+    after = "throw"
   end
 
   if after == "close" then
     inv_box.dur = 0
     stat_box.dur = 0
     _upd = update_game
+  elseif after == "throw" then
+    inv_box.dur = 0
+    stat_box.dur = 0
+    _upd = update_throw
   elseif after == "turn" then
     inv_box.dur = 0
     stat_box.dur = 0

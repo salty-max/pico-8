@@ -54,6 +54,8 @@ function start_game()
 
   a_t = 0
 
+  thr_dir, thr_dx, thr_dy = 2, -1, -1
+
   inv, eqp = {}, {}
   take_item(1)
   take_item(2)

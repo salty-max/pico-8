@@ -83,3 +83,18 @@ function unfog_tile(x, y)
     end
   end
 end
+
+function throw()
+  _upd = update_game
+end
+
+function throw_tile()
+  local tx, ty = player.x, player.y
+
+  repeat
+    tx += thr_dx
+    ty += thr_dy
+  until not is_walkable(tx, ty, "check_mobs")
+
+  return tx, ty
+end

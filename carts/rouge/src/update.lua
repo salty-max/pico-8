@@ -73,3 +73,18 @@ function update_inv()
 
   move_menu(curr_box)
 end
+
+function update_throw()
+  local b = get_butt()
+  if b >= 0 and b < 4 then
+    thr_dir = b
+  end
+
+  thr_dx, thr_dy = dir_x[thr_dir + 1], dir_y[thr_dir + 1]
+
+  if b == 4 then
+    throw()
+  elseif b == 5 then
+    _upd = update_game
+  end
+end
