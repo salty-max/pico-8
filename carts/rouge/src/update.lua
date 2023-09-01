@@ -64,7 +64,7 @@ function update_inv()
     if curr_box == inv_box and inv_box.cur != 3 then
       show_use_menu()
     elseif curr_box == itm_menu_box then
-      -- use item
+      use_item()
     end
   end
 

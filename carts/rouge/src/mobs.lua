@@ -8,7 +8,10 @@ function add_mob(type, mx, my)
     flp = false,
     anim = {},
     flash = 0,
+    base_atk = bestiary.atk[type],
     atk = bestiary.atk[type],
+    def_min = 0,
+    def_max = 0,
     hp = bestiary.hp[type],
     hp_max = bestiary.hp[type],
     los = bestiary.los[type],
@@ -92,6 +95,9 @@ end
 
 function hit_mob(am, dm)
   local dmg = am.atk
+  local def = dm.def_min + flr(rnd(dm.def_max - dm.def_min + 1))
+  dmg -= min(def, dmg)
+
   dm.hp -= dmg
   dm.flash = 10
 
@@ -229,4 +235,21 @@ function los(x1, y1, x2, y2)
 
   -- if function reaches here, there's an unblocked line of sight.
   return true
+end
+
+function update_stats()
+  local atk, def_min, def_max = player.base_atk, 0, 0
+
+  if eqp[1] then
+    atk += items.stat_1[eqp[1]]
+  end
+
+  if eqp[2] then
+    def_min += items.stat_1[eqp[2]]
+    def_max += items.stat_2[eqp[2]]
+  end
+
+  player.atk = atk
+  player.def_min = def_min
+  player.def_max = def_max
 end

@@ -5,13 +5,16 @@
 bestiary = {
   anim = { 240, 192 }, -- first frame of animation
   atk = { 1, 1 }, -- attack power
+  def = { 0, 0 }, -- defense rating
   hp = { 5, 2 }, -- health
   los = { 4, 4 } -- line of sight
 }
 
 items = {
-  name = { "red potion", "iron sword", "leather armor", "sausage", "kunai" },
-  kind = { "drk", "wep", "arm", "fud", "thr" }
+  name = { "iron sword", "leather armor", "sausage", "red potion", "kunai", "wooden stick" },
+  kind = { "wep", "arm", "fud", "drk", "thr", "wep" },
+  stat_1 = {2, 0, 2, 5, 1, 1},
+  stat_2 = {0, 2, 0, 0, 0, 0},
 }
 
 function _init()

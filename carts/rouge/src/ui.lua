@@ -136,7 +136,7 @@ function show_inv()
   inv_box.col = col
   curr_box = inv_box
 
-  stat_box = add_window(5, 5, 84, 13, {"atk: 1  def: 1"})
+  stat_box = add_window(5, 5, 84, 13, {"atk: "..player.atk.."   def: "..player.def_min.."-"..player.def_max})
 end
 
 function move_menu(w)
@@ -157,7 +157,7 @@ function show_use_menu()
 
   local knd, txt = items.kind[itm], {}
 
-  if knd == "wep" or knd == "arm" then
+  if idx > 3 and (knd == "wep" or knd == "arm") then
     add(txt, "equip")
   elseif knd == "fud" then
     add(txt, "eat")
@@ -174,4 +174,39 @@ function show_use_menu()
   itm_menu_box = add_window(84, idx * 6 + 11, 36, 7 + #txt * 6, txt)
   itm_menu_box.cur = 1
   curr_box = itm_menu_box
+end
+
+function use_item()
+  local idx, after = inv_box.cur, "back"
+  local itm = idx < 3 and eqp[idx] or inv[idx - 3]
+  local verb = itm_menu_box.txt[itm_menu_box.cur]
+
+  if verb == "drop" then
+    if idx < 3 then
+      eqp[idx] = nil
+      update_stats()
+    else
+      inv[idx - 3] = nil
+    end
+  elseif verb == "equip" then
+    local slot = items.kind[itm] == "wep" and 1 or 2
+    inv[idx - 3] = eqp[slot]
+    eqp[slot] = itm
+    update_stats()
+  elseif verb == "eat" or verb == "drink" then
+  elseif verb == "throw" then
+  end
+
+  if after == "close" then
+    inv_box.dur = 0
+    stat_box.dur = 0
+    _upd = update_game
+  elseif after == "back" then
+    curr_box = inv_box
+    del(windows, inv_box)
+    del(windows, stat_box)
+    show_inv()
+    inv_box.cur = idx
+  end
+  itm_menu_box.dur = 0
 end
