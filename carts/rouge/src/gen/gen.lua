@@ -9,5 +9,7 @@ function map_gen()
   maze_worm()
   place_flags()
   carve_doors()
+  carve_scuts()
+  fill_ends()
 end
 

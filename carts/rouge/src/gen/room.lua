@@ -1,5 +1,5 @@
 function gen_rooms()
-  local fmax, rmax = 5, 4
+  local fmax, rmax = 5, 5
   local max_w, max_h = 6, 6
 
   repeat

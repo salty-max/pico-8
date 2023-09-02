@@ -23,10 +23,10 @@ function dig_worm(x, y)
   repeat
     local cand = {}
     mset(x, y, 1)
-    if not can_carve(x + dir_x[dir], y + dir_y[dir]) or (rnd() < 0.5 and stp > 2) then
+    if not can_carve(x + dir_x[dir], y + dir_y[dir], false) or (rnd() < 0.5 and stp > 2) then
       stp = 0
       for i = 1, 4 do
-        if can_carve(x + dir_x[i], y + dir_y[i]) then
+        if can_carve(x + dir_x[i], y + dir_y[i], false) then
           add(cand, i)
         end
       end
@@ -44,8 +44,8 @@ function dig_worm(x, y)
   until dir == 8
 end
 
-function can_carve(x, y)
-  if is_in_bounds(x, y) and not is_walkable(x, y) then
+function can_carve(x, y, walk)
+  if is_in_bounds(x, y) and is_walkable(x, y) == walk then
     local sig = get_sig(x, y)
     for i = 1, #crv_sig do
       if sig_comp(sig, crv_sig[i], crv_msk[i]) then
@@ -55,4 +55,23 @@ function can_carve(x, y)
   end
 
   return false
+end
+
+function fill_ends()
+  local cand
+
+  repeat
+    cand = {}
+    for mx = 0, 15 do
+      for my = 0, 15 do
+        if is_walkable(mx, my) and can_carve(mx ,my, true) then
+          add(cand, {x = mx, y = my})
+        end
+      end
+    end
+
+    for c in all(cand) do
+      mset(c.x, c.y, 2)
+    end
+  until #cand == 0
 end

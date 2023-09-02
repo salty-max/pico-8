@@ -56,14 +56,6 @@ function draw_game()
   for f in all(float) do
     o_print_8(f.s, f.x, f.y, f.c, 0)
   end
-
-  for x = 0, 15 do
-    for y = 0, 15 do
-      if flags[x][y] != 0 then
-        pset(x * 8 + 3, y * 8 + 5, flags[x][y])
-      end
-    end
-  end
 end
 
 function draw_gover()
