@@ -10,7 +10,6 @@ function move_player(dx, dy)
   else
     -- not walkable
     mob_bump(player, dx, dy)
-    skip_ai = true
     a_t = 0
     _upd = update_pturn
 
@@ -23,6 +22,10 @@ function move_player(dx, dy)
       -- interact
       if fget(tile, 1) then
         trigger_bump(tile, destx, desty)
+      else
+        skip_ai = true
+        mset(destx, desty, 1)
+        maze_worm()
       end
     end
   end

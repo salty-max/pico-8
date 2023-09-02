@@ -25,6 +25,9 @@ function _init()
   dir_x = { -1, 1, 0, 0, 1, 1, -1, -1 }
   dir_y = { 0, 0, -1, 1, -1, 1, 1, -1 }
 
+  crv_sig = { 0b11111111, 0b11010110, 0b01111100, 0b10110011, 0b11101001 }
+  crv_msk = { 0b00000000, 0b00001001, 0b00000011, 0b00001100, 0b00000110 }
+
   debug = {}
 
   start_game()
@@ -79,7 +82,7 @@ function _draw()
   check_fade()
 
   cursor(4, 4)
-  color(8)
+  color(12)
   for d in all(debug) do
     print(d)
   end

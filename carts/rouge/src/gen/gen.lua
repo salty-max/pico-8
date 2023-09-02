@@ -6,5 +6,6 @@ function map_gen()
   end
 
   gen_rooms()
+  maze_worm()
 end
 
