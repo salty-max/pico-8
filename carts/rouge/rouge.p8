@@ -8,6 +8,7 @@ __lua__
 #include src/draw.lua
 #include src/gen/gen.lua
 #include src/gen/room.lua
+#include src/gen/maze.lua
 #include src/player.lua
 #include src/mobs.lua
 #include src/items.lua

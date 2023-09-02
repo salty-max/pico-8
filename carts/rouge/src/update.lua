@@ -8,6 +8,7 @@ function update_game()
   buffer_butt()
   handle_butt(butt_buff)
   butt_buff = -1
+  debug[3] = "sig: "..get_sig(player.x, player.y)
 end
 
 function update_gover()
