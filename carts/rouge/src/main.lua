@@ -45,24 +45,13 @@ function start_game()
   d_map = {}
   -- reference for the player mob
   player = add_mob(1, 1, 1)
-
-  for y = 0, 15 do
-    for x = 0, 15 do
-      if mget(x, y) == 192 then
-        add_mob(2, x, y)
-        mset(x, y, 1)
-      end
-    end
-  end
-
   a_t = 0
-
   thr_dx, thr_dy = 1, 0
-
   inv, eqp = {}, {}
 
+  map_gen()
   -- map opacity grid
-  fog = blank_map(1)
+  fog = blank_map(0)
 
   windows = {}
   float = {}
