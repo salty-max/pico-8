@@ -27,15 +27,17 @@ function update_pturn()
   end
 
   if a_t == 1 then
+    local tle = mget(player.x, player.y)
+    
     _upd = update_game
-    if check_end() then
-      if skip_ai then
-        skip_ai = false
-      else
-        do_ai()
-      end
+
+    if trigger_step() then return end
+
+    if check_end() and not skip_ai then
+      do_ai()
     end
-    -- calc_dist(player.x, player.y)
+
+    skip_ai = false
   end
 end
 

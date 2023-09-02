@@ -52,21 +52,20 @@ function start_game()
   thr_dx, thr_dy = 1, 0
   inv, eqp = {}, {}
 
-  map_gen()
   -- map opacity grid
   fog = blank_map(0)
-
+  
   windows = {}
   float = {}
   dialog_box = nil
-
+  
   hp_box = add_window(5, 5, 28, 13, {})
-
+  
   _upd = update_game
   _drw = draw_game
-
+  
+  gen_floor(0)
   unfog()
-  -- calc_dist(player.x, player.y)
 end
 
 function _update60()

@@ -58,6 +58,19 @@ function trigger_bump(tile, dx, dy)
   end
 end
 
+function trigger_step()
+  local tle = mget(player.x, player.y)
+
+  if tle == 14 then
+    fade_out()
+    gen_floor(floor + 1)
+    show_flr_msg()
+    return true
+  end
+
+  return false
+end
+
 function check_end()
   if player.hp <= 0 then
     _upd = update_gover

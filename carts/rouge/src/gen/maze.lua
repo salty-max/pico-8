@@ -58,13 +58,14 @@ function can_carve(x, y, walk)
 end
 
 function fill_ends()
-  local cand
+  local cand, tle
 
   repeat
     cand = {}
     for mx = 0, 15 do
       for my = 0, 15 do
-        if is_walkable(mx, my) and can_carve(mx ,my, true) then
+        tle = mget(mx, my)
+        if  can_carve(mx ,my, true) and tle != 14 and tle != 15 then
           add(cand, {x = mx, y = my})
         end
       end

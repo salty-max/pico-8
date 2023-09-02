@@ -75,7 +75,7 @@ function blank_map(dflt)
 end
 
 function calc_dist(tx, ty)
-  local cand, step = {}, 0
+  local cand, step, cand_new = {}, 0
   d_map = blank_map(-1)
   add(cand, { x = tx, y = ty })
   d_map[tx][ty] = step
@@ -83,7 +83,7 @@ function calc_dist(tx, ty)
   repeat
     step += 1
 
-    local cand_new = {}
+    cand_new = {}
     for c in all(cand) do
       for d = 1, 4 do
         local dx, dy = c.x + dir_x[d], c.y + dir_y[d]

@@ -1,5 +1,5 @@
 function gen_rooms()
-  local fmax, rmax = 5, 4
+  local fmax, rmax = 5, 5
   local max_w, max_h = 6, 6
 
   repeat
@@ -19,7 +19,7 @@ end
 function rnd_room(max_rw, max_rh)
   -- clamp max area
   local rw = 3 + flr(rnd(max_rw - 2))
-  local max_rh = max(3, 35 / rw)
+  local max_rh = mid(3, 35 / rw, max_rh)
   local rh = 3 + flr(rnd(max_rh - 2))
 
   return {

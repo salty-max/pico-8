@@ -25,6 +25,14 @@ function start_end()
       if tmp > high and can_carve(x, y, false) then
         ex, ey, high = x, y, tmp
       end
+    end
+  end
+
+  mset(ex, ey, 14)
+
+  for x = 0, 15 do
+    for y = 0, 15 do
+      local tmp = d_map[x][y]
       if tmp > 0 and tmp < low and can_carve(x, y, false) then
         px, py, low = x, y, tmp
       end
@@ -33,7 +41,6 @@ function start_end()
 
 
   mset(px, py, 15)
-  mset(ex, ey, 14)
   player.x, player.y = px, py
 end
 

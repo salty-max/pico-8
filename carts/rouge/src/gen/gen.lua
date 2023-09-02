@@ -1,3 +1,8 @@
+function gen_floor(f)
+  floor = f
+  map_gen()
+end
+
 function map_gen()
   for x = 0, 15 do
     for y = 0, 15 do
@@ -14,8 +19,8 @@ function map_gen()
   place_flags()
   carve_doors()
   carve_scuts()
-  fill_ends()
   start_end()
+  fill_ends()
   place_doors()
 end
 

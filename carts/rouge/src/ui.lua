@@ -218,3 +218,7 @@ function use_item()
     stat_box.dur = 0
   end
 end
+
+function show_flr_msg()
+  show_msg("floor " .. floor, 60)
+end

@@ -170,13 +170,13 @@ function ai_chase(self)
           end
 
           if dst == bdst then
-            add(cand, { x = dx, y = dy })
+            add(cand, i)
           end
         end
       end
       if #cand > 0 then
         local c = rnd(cand)
-        mob_walk(self, c.x, c.y)
+        mob_walk(self, dir_x[c], dir_y[c])
         return true
       end
     end
