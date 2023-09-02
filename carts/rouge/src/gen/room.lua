@@ -1,5 +1,5 @@
 function gen_rooms()
-  local fmax, rmax = 5, 5
+  local fmax, rmax = 5, 4
   local max_w, max_h = 6, 6
 
   repeat
@@ -45,7 +45,7 @@ function place_room(r)
 
   if #cand == 0 then return false end
 
-  c = get_rnd(cand)
+  c = rnd(cand)
   r.x, r.y = c.x, c.y
 
   for x = 0, r.w - 1 do

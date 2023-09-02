@@ -175,7 +175,7 @@ function ai_chase(self)
         end
       end
       if #cand > 0 then
-        local c = get_rnd(cand)
+        local c = rnd(cand)
         mob_walk(self, c.x, c.y)
         return true
       end

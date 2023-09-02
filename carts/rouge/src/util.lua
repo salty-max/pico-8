@@ -99,7 +99,3 @@ function calc_dist(tx, ty)
     cand = cand_new
   until #cand == 0
 end
-
-function get_rnd(arr)
-  return arr[1 + flr(rnd(#arr))]
-end

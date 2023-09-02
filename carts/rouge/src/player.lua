@@ -24,8 +24,6 @@ function move_player(dx, dy)
         trigger_bump(tile, destx, desty)
       else
         skip_ai = true
-        mset(destx, desty, 1)
-        maze_worm()
       end
     end
   end
