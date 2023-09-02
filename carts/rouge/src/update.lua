@@ -29,7 +29,11 @@ function update_pturn()
   if a_t == 1 then
     _upd = update_game
     if check_end() then
-      do_ai()
+      if skip_ai then
+        skip_ai = false
+      else
+        do_ai()
+      end
     end
     -- calc_dist(player.x, player.y)
   end

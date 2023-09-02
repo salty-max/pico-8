@@ -10,6 +10,7 @@ function move_player(dx, dy)
   else
     -- not walkable
     mob_bump(player, dx, dy)
+    skip_ai = true
     a_t = 0
     _upd = update_pturn
 
@@ -37,10 +38,18 @@ function trigger_bump(tile, dx, dy)
     -- pots
     sfx(59)
     mset(dx, dy, 1)
+    if rnd(4) < 1 then
+      local itm = flr(rnd(#items.name) + 1)
+      take_item(itm)
+      show_msg("you found a " .. items.name[itm] .. "!", 60)
+    end
   elseif tile == 10 or tile == 12 then
     -- chests
     sfx(61)
     mset(dx, dy, tile - 1)
+    local itm = flr(rnd(#items.name) + 1)
+    take_item(itm)
+    show_msg("you found a " .. items.name[itm] .. "!", 60)
   elseif tile == 13 then
     -- doors
     sfx(62)

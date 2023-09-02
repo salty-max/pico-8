@@ -35,6 +35,8 @@ function start_game()
   fade_perc = 1
   -- buffer for inputs
   butt_buff = -1
+  -- flag for skipping AI
+  skip_ai = false
   -- array for living mobs
   -- this includes player
   mobs = {}
@@ -58,14 +60,9 @@ function start_game()
   thr_dx, thr_dy = 1, 0
 
   inv, eqp = {}, {}
-  take_item(1)
-  take_item(2)
-  take_item(3)
-  take_item(4)
-  take_item(5)
 
   -- map opacity grid
-  fog = blank_map(0)
+  fog = blank_map(1)
 
   windows = {}
   float = {}
