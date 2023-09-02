@@ -7,5 +7,7 @@ function map_gen()
 
   gen_rooms()
   maze_worm()
+  place_flags()
+  carve_doors()
 end
 

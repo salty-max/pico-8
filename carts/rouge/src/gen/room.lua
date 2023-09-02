@@ -14,8 +14,6 @@ function gen_rooms()
     end
   until fmax <= 0 or rmax <= 0
 
-  debug[1] = "fails: "..fmax
-  debug[2] = "rooms: "..rmax
 end
 
 function rnd_room(max_rw, max_rh)
