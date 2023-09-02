@@ -5,11 +5,17 @@ function map_gen()
     end
   end
 
+  rooms = {}
+  roomap = blank_map(0)
+  doors = {}
+
   gen_rooms()
   maze_worm()
   place_flags()
   carve_doors()
   carve_scuts()
   fill_ends()
+  start_end()
+  place_doors()
 end
 

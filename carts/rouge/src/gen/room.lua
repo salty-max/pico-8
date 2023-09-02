@@ -1,5 +1,5 @@
 function gen_rooms()
-  local fmax, rmax = 5, 5
+  local fmax, rmax = 5, 4
   local max_w, max_h = 6, 6
 
   repeat
@@ -45,10 +45,12 @@ function place_room(r)
 
   c = rnd(cand)
   r.x, r.y = c.x, c.y
+  add(rooms, r)
 
   for x = 0, r.w - 1 do
     for y = 0, r.h - 1 do
       mset(x + r.x, y + r.y, 1)
+      roomap[x + r.x][y + r.y] = #rooms
     end
   end
 

@@ -58,6 +58,8 @@ function carve_doors()
 
     if #drs > 0 then
       local d = rnd(drs)
+
+      add(doors, d)
       mset(d.x, d.y, 1)
       grow_flag(d.x, d.y, d.f1)
     end
@@ -65,7 +67,7 @@ function carve_doors()
 end
 
 function carve_scuts()
-  local x1, y1, x2, y2, drs, found = 1, 1, 1, 1
+  local x1, y1, x2, y2, cut, drs, found = 1, 1, 1, 1, 0
 
   repeat
     drs = {}
@@ -92,8 +94,19 @@ function carve_scuts()
 
     if #drs > 0 then
       local d = rnd(drs)
+      add(doors, d)
       mset(d.x, d.y, 1)
-      grow_flag(d.x, d.y, d.f1)
+      cut += 1
     end
-  until #drs == 0
+  until #drs == 0 or cut >= 3
+end
+
+function is_door(x, y)
+  for i = 1, 4 do
+    if is_in_bounds(x + dir_x[i], y + dir_y[i]) and roomap[x + dir_x[i]][y + dir_y[i]] != 0 then
+      return true
+    end
+  end
+
+  return false
 end
