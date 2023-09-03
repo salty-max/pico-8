@@ -4,7 +4,7 @@ function maze_worm()
     cand = {}
     for mx = 0, 15 do
       for my = 0, 15 do
-        if not is_walkable(mx, my) and get_sig(mx, my) == 255 then
+        if can_carve(mx, my, false) and not is_next_to_room(mx, my) then
           add(cand, {x = mx, y = my})
         end
       end
@@ -15,22 +15,6 @@ function maze_worm()
       dig_worm(c.x, c.y)
     end
   until #cand <= 1
-
-  repeat
-    cand = {}
-    for mx = 0, 15 do
-      for my = 0, 15 do
-        if can_carve(mx, my, false) and not is_next_to_room(mx ,my) then
-          add(cand, {x = mx, y = my})
-        end
-      end
-    end
-
-    if #cand > 0 then
-      local c = rnd(cand)
-      mset(c.x, c.y, 1)
-    end
-  until #cand <= 1
 end
 
 function dig_worm(x, y)
@@ -39,6 +23,7 @@ function dig_worm(x, y)
   repeat
     local cand = {}
     mset(x, y, 1)
+    snapshot()
     if not can_carve(x + dir_x[dir], y + dir_y[dir], false) or (rnd() < 0.5 and stp > 2) then
       stp = 0
       for i = 1, 4 do
@@ -61,7 +46,9 @@ function dig_worm(x, y)
 end
 
 function can_carve(x, y, walk)
-  if is_in_bounds(x, y) and is_walkable(x, y) == walk then
+  if not is_in_bounds(x, y) then return false end
+  local walk = walk == nil and is_walkable(x, y) or walk
+  if is_walkable(x, y) == walk then
     local sig = get_sig(x, y)
     for i = 1, #crv_sig do
       if sig_comp(sig, crv_sig[i], crv_msk[i]) then
@@ -74,23 +61,21 @@ function can_carve(x, y, walk)
 end
 
 function fill_ends()
-  local cand, tle
+  local filled, tle
 
   repeat
-    cand = {}
+    filled = false
     for mx = 0, 15 do
       for my = 0, 15 do
         tle = mget(mx, my)
         if  can_carve(mx ,my, true) and tle != 14 and tle != 15 then
-          add(cand, {x = mx, y = my})
+          filled = true
+          mset(mx, my, 2)
+          snapshot()
         end
       end
     end
-
-    for c in all(cand) do
-      mset(c.x, c.y, 2)
-    end
-  until #cand == 0
+  until not filled
 end
 
 function is_next_to_room(x, y)

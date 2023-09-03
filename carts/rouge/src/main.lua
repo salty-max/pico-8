@@ -30,6 +30,8 @@ function _init()
 
   debug = {}
 
+  is_dyn_gen = true
+
   start_game()
 end
 
@@ -81,7 +83,11 @@ end
 function _draw()
   _drw()
   draw_windows()
-  check_fade()
+  if is_dyn_gen then
+    fade_perc = 0
+  else
+    check_fade()
+  end
 
   cursor(4, 4)
   color(12)

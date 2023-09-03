@@ -1,5 +1,8 @@
 function gen_floor(f)
   floor = f
+  mobs = {}
+  add(mobs, player)
+
   if floor == 0 then
     copy_map(16, 0)
   elseif floor == win_flr then
@@ -16,9 +19,6 @@ function map_gen()
   roomap = blank_map(0)
   doors = {}
 
-  mobs = {}
-  add(mobs, player)
-
   gen_rooms()
   maze_worm()
   place_flags()
@@ -28,5 +28,14 @@ function map_gen()
   fill_ends()
   place_doors()
   spawn_mobs()
+end
+
+function snapshot()
+  if not is_dyn_gen then return end
+  cls()
+  map()
+  for i = 0, 5 do
+    flip()
+  end
 end
 

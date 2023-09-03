@@ -7,6 +7,7 @@ function gen_rooms()
 
     if place_room(r) then
       rmax -= 1
+      snapshot()
     else
       fmax -= 1
       max_w = max(max_w - 1, 3)

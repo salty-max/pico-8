@@ -21,5 +21,7 @@ function handle_butt(b)
     move_player(dir_x[b + 1], dir_y[b + 1])
   elseif b == 4 then
     show_inv()
+  elseif b == 5 then
+    map_gen()
   end
 end

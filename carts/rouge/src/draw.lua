@@ -1,5 +1,6 @@
 function draw_game()
   cls(0)
+  if fade_perc == 1 then return end
   map()
 
   -- for x = 0, 15 do
