@@ -54,3 +54,22 @@ function place_doors()
     end
   end
 end
+
+function prettify_walls()
+  for x = 0, 15 do
+    for y = 0, 15 do
+      if mget(x, y) == 2 then
+        local sig, tle = get_sig(x, y), 2
+
+        for i = 1, #wall_sig do
+          if sig_comp(sig, wall_sig[i], wall_msk[i]) then
+            tle = i + 15
+            break
+          end
+        end
+
+        mset(x, y, tle)
+      end
+    end
+  end
+end

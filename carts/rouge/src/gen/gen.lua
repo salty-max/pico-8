@@ -27,6 +27,7 @@ function map_gen()
   start_end()
   fill_ends()
   place_doors()
+  prettify_walls()
   spawn_mobs()
 end
 
