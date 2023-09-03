@@ -2,14 +2,18 @@ function gen_floor(f)
   floor = f
   mobs = {}
   add(mobs, player)
+  fog = blank_map(0)
 
   if floor == 0 then
     copy_map(16, 0)
   elseif floor == win_flr then
     copy_map(32, 0)
   else
+    fog = blank_map(1)
     map_gen()
   end
+
+  unfog()
 end
 
 function map_gen()
@@ -26,8 +30,8 @@ function map_gen()
   carve_scuts()
   start_end()
   fill_ends()
-  place_doors()
   prettify_walls()
+  place_doors()
   spawn_mobs()
 end
 

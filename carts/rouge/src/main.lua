@@ -3,33 +3,33 @@
 -- 2: slime, 192, 1, 2, 4
 
 bestiary = {
-  name = { "player", "slime" },
-  anim = { 240, 192 }, -- first frame of animation
-  atk = { 1, 1 }, -- attack power
-  def = { 0, 0 }, -- defense rating
-  hp = { 5, 2 }, -- health
-  los = { 4, 4 } -- line of sight
+  name = split("player,slime"),
+  anim = split("240, 192"), -- first frame of animation
+  atk = split("1, 1"), -- attack power
+  def = split("0, 0"), -- defense rating
+  hp = split("5, 2"), -- health
+  los = split("4, 4") -- line of sight
 }
 
 items = {
-  name = { "iron sword", "leather armor", "sausage", "red potion", "kunai", "wooden stick" },
-  kind = { "wep", "arm", "fud", "drk", "thr", "wep" },
-  stat_1 = {2, 0, 1, 1, 2, 1},
-  stat_2 = {0, 2, 2, 5, 0, 0},
+  name = split("iron sword,leather armor,sausage,red potion,kunai,wooden stick"),
+  kind = split("wep,arm,fud,drk,thr,wep"),
+  stat_1 = split("2, 0, 1, 1, 2, 1"),
+  stat_2 = split("0, 2, 2, 5, 0, 0"),
 }
 
 function _init()
   t = 0
-  d_pal = { 0, 1, 1, 2, 1, 13, 6, 4, 4, 9, 3, 13, 1, 13, 14 }
+  d_pal = split("0, 1, 1, 2, 1, 13, 6, 4, 4, 9, 3, 13, 1, 13, 14")
   -- fade palette
-  dir_x = { -1, 1, 0, 0, 1, 1, -1, -1 }
-  dir_y = { 0, 0, -1, 1, -1, 1, 1, -1 }
+  dir_x = split("-1, 1, 0, 0, 1, 1, -1, -1")
+  dir_y = split("0, 0, -1, 1, -1, 1, 1, -1")
 
-  crv_sig = { 255, 214, 124, 179, 233 }
-  crv_msk = { 0, 9, 3, 12, 6 }
+  crv_sig = split("255, 214, 124, 179, 233")
+  crv_msk = split("0, 9, 3, 12, 6")
 
-  wall_sig={251,233,253,84,146,80,16,144,112,208,241,248,210,177,225,120,179,0,124,104,161,64,240,128,224,176,242,244,116,232,178,212,247,214,254,192,48,96,32,160,245,250,243,249,246,252}
-  wall_msk={0,6,0,11,13,11,15,13,3,9,0,0,9,12,6,3,12,15,3,7,14,15,0,15,6,12,0,0,3,6,12,9,0,9,0,15,15,7,15,14,0,0,0,0,0,0}
+  wall_sig=split("251,233,253,84,146,80,16,144,112,208,241,248,210,177,225,120,179,0,124,104,161,64,240,128,224,176,242,244,116,232,178,212,247,214,254,192,48,96,32,160,245,250,243,249,246,252")
+  wall_msk=split("0,6,0,11,13,11,15,13,3,9,0,0,9,12,6,3,12,15,3,7,14,15,0,15,6,12,0,0,3,6,12,9,0,9,0,15,15,7,15,14,0,0,0,0,0,0")
 
 
 
@@ -58,9 +58,6 @@ function start_game()
   a_t = 0
   thr_dx, thr_dy = 1, 0
   inv, eqp = {}, {}
-
-  -- map opacity grid
-  fog = blank_map(0)
   
   windows = {}
   float = {}
@@ -75,7 +72,6 @@ function start_game()
   win_flr = 9
   
   gen_floor(0)
-  unfog()
 end
 
 function _update60()

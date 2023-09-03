@@ -59,7 +59,7 @@ function prettify_walls()
   for x = 0, 15 do
     for y = 0, 15 do
       if mget(x, y) == 2 then
-        local sig, tle = get_sig(x, y), 2
+        local sig, tle = get_sig(x, y), 3
 
         for i = 1, #wall_sig do
           if sig_comp(sig, wall_sig[i], wall_msk[i]) then
@@ -69,6 +69,19 @@ function prettify_walls()
         end
 
         mset(x, y, tle)
+      elseif mget(x, y) == 1 then
+        local tle = mget(x, y - 1)
+        if not is_walkable(x, y - 1) then
+          if tle == 35 or tle == 37 or tle == 53 then
+            mset(x, y, 63)
+          elseif tle == 36 or tle == 39 or tle == 55 then
+            mset(x, y, 62)
+          elseif tle == 54 then
+            mset(x, y, 5)
+          else
+            mset(x, y, 4)
+          end
+        end
       end
     end
   end
