@@ -269,3 +269,31 @@ function heal_mob(mob, amt)
   mob.flash = 10
   add_float("+"..amt, mob.x * 8, mob.y * 8, 11)
 end
+
+function spawn_mobs()
+  local placed, rpot, min_mobs = 0, {}, 3
+
+  for r in all(rooms) do
+    add(rpot, r)
+  end
+
+  repeat
+    local r = rnd(rpot)
+    placed += infest_room(r)
+    del(rpot, r)
+  until #rpot == 0 or placed >= min_mobs
+end
+
+function infest_room(r)
+  local target, x, y = 2 + flr(rnd(3))
+
+  for i = 1, target do
+    repeat
+      x = r.x + flr(rnd(r.w))
+      y = r.y + flr(rnd(r.h))
+    until is_walkable(x, y, "check_mobs")
+    add_mob(2, x, y)
+  end
+
+  return target
+end

@@ -16,6 +16,9 @@ function map_gen()
   roomap = blank_map(0)
   doors = {}
 
+  mobs = {}
+  add(mobs, player)
+
   gen_rooms()
   maze_worm()
   place_flags()
@@ -24,5 +27,6 @@ function map_gen()
   start_end()
   fill_ends()
   place_doors()
+  spawn_mobs()
 end
 
