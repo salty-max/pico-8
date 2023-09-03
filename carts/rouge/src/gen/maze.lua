@@ -15,6 +15,22 @@ function maze_worm()
       dig_worm(c.x, c.y)
     end
   until #cand <= 1
+
+  repeat
+    cand = {}
+    for mx = 0, 15 do
+      for my = 0, 15 do
+        if can_carve(mx, my, false) and not is_next_to_room(mx ,my) then
+          add(cand, {x = mx, y = my})
+        end
+      end
+    end
+
+    if #cand > 0 then
+      local c = rnd(cand)
+      mset(c.x, c.y, 1)
+    end
+  until #cand <= 1
 end
 
 function dig_worm(x, y)
@@ -75,4 +91,14 @@ function fill_ends()
       mset(c.x, c.y, 2)
     end
   until #cand == 0
+end
+
+function is_next_to_room(x, y)
+
+  for i = 1, 4 do
+    if is_in_bounds(x + dir_x[i], y + dir_y[i]) and roomap[x + dir_x[i]][y + dir_y[i]] != 0 then
+      return true
+    end
+  end
+  return false
 end

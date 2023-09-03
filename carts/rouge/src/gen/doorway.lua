@@ -102,9 +102,12 @@ function carve_scuts()
 end
 
 function is_door(x, y)
-  for i = 1, 4 do
-    if is_in_bounds(x + dir_x[i], y + dir_y[i]) and roomap[x + dir_x[i]][y + dir_y[i]] != 0 then
-      return true
+  local sig = get_sig(x, y)
+  if sig_comp(sig, 0b11000000, 0b00001111) or sig_comp(sig, 0b00110000, 0b00001111) then
+    for i = 1, 4 do
+      if is_in_bounds(x + dir_x[i], y + dir_y[i]) and roomap[x + dir_x[i]][y + dir_y[i]] != 0 then
+        return true
+      end
     end
   end
 

@@ -22,7 +22,7 @@ function start_end()
   for x = 0, 15 do
     for y = 0, 15 do
       local tmp = d_map[x][y]
-      if tmp > high and can_carve(x, y, false) then
+      if tmp > high and (can_carve(x, y, false) or can_carve(x, y, true)) then
         ex, ey, high = x, y, tmp
       end
     end
@@ -33,7 +33,7 @@ function start_end()
   for x = 0, 15 do
     for y = 0, 15 do
       local tmp = d_map[x][y]
-      if tmp > 0 and tmp < low and can_carve(x, y, false) then
+      if tmp > 0 and tmp < low and (can_carve(x, y, false) or can_carve(x, y, true)) then
         px, py, low = x, y, tmp
       end
     end
@@ -46,7 +46,7 @@ end
 
 function place_doors()
   for d in all(doors) do
-    if is_walkable(d.x, d.y) and is_door(d.x, d.y) then
+    if mget(d.x, d.y) == 1 and is_walkable(d.x, d.y) and is_door(d.x, d.y) then
       mset(d.x, d.y, 13)
     end
   end
