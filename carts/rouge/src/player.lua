@@ -34,7 +34,12 @@ end
 function trigger_bump(tile, dx, dy)
   if tile == 6 then
     -- tablets
-    show_dialog({ "welcome to my lair", "", "climb the tower", "if you dare", "", "bwa ha ha ha ha", "*cough* *cough*" }, 120)
+  if floor == 0 then
+    show_dialog({"", " welcome to my", " cheaply-made tower!", "", " inside: briefly", " trained monsters, ", " puzzles i forgot to", " finish, and the", " famous glowing rock!", "", " climb, if you dare!", " mwa ha ha ha ha ha", " *cough* *cough*", ""})
+  end
+  if floor == win_flr then
+    win = true
+  end
   elseif tile == 7 or tile == 8 then
     -- pots
     sfx(59)
@@ -72,7 +77,14 @@ function trigger_step()
 end
 
 function check_end()
-  if player.hp <= 0 then
+  if win then
+    _upd = update_win
+    _drw = draw_win
+    windows = {}
+    fade_out(0.02)
+    reload(0x2000, 0x2000, 0x1000)
+    return false
+  elseif player.hp <= 0 then
     _upd = update_gover
     _drw = draw_gover
     windows = {}

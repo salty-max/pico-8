@@ -63,6 +63,9 @@ function start_game()
   
   _upd = update_game
   _drw = draw_game
+
+  win = false
+  win_flr = 9
   
   gen_floor(0)
   unfog()

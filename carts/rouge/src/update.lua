@@ -17,6 +17,13 @@ function update_gover()
   end
 end
 
+function update_win()
+  if btnp(5) then
+    fade_out()
+    start_game()
+  end
+end
+
 function update_pturn()
   buffer_butt()
 
@@ -58,7 +65,7 @@ function update_ai_turn()
 end
 
 function update_inv()
-  if btnp(4) then
+  if btnp(5) then
     if curr_box == inv_box then
       _upd = update_game
       inv_box.dur = 0
@@ -69,7 +76,7 @@ function update_inv()
     end
   end
 
-  if btnp(5) then
+  if btnp(4) then
     if curr_box == inv_box and inv_box.cur != 3 then
       show_use_menu()
     elseif curr_box == itm_menu_box then
@@ -86,10 +93,10 @@ function update_throw()
     thr_dx, thr_dy = dir_x[b + 1], dir_y[b + 1]
   end
 
-  if b == 4 then
+  if b == 5 then
     a_t = 0
     _upd = update_pturn
-  elseif b == 5 then
+  elseif b == 4 then
     throw()
   end
 end

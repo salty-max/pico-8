@@ -63,6 +63,11 @@ function draw_gover()
   o_print_8("u ded", 54, 60, 7, 0)
 end
 
+function draw_win()
+  cls(3)
+  o_print_8("u win", 54, 60, 7, 0)
+end
+
 function draw_mob(m)
   local c = m.c
   if m.flash > 0 then

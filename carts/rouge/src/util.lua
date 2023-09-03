@@ -99,3 +99,17 @@ function calc_dist(tx, ty)
     cand = cand_new
   until #cand == 0
 end
+
+function copy_map(mx, my)
+  local tle
+  for x = 0, 15 do
+    for y = 0, 15 do
+      tle = mget(mx + x, my + y)
+      mset(x, y, tle)
+
+      if tle == 15 then
+        player.x, player.y = x, y
+      end
+    end
+  end
+end
