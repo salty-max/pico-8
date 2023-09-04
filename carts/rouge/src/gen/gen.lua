@@ -32,7 +32,7 @@ function map_gen()
   fill_ends()
   prettify_walls()
   place_doors()
-  spawn_mobs()
+  --spawn_mobs()
   deco_rooms()
 end
 
