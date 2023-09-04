@@ -14,6 +14,7 @@ function add_mob(type, mx, my)
     def_max = 0,
     hp = bestiary.hp[type],
     hp_max = bestiary.hp[type],
+    stun = false,
     los = bestiary.los[type],
     task = ai_wait
   }
@@ -115,7 +116,11 @@ function do_ai()
   for m in all(mobs) do
     if m != player then
       m.mov = nil
-      moving = m:task() or moving
+      if m.stun then
+        m.stun = false
+      else
+        moving = m:task() or moving
+      end
     end
   end
 
@@ -271,6 +276,7 @@ function consume(mob, itm)
     heal_mob(mob, 1)
   elseif eft == 4 then
     -- stun
+    stun_mob(mob)
   elseif eft == 5 then
     -- curse
   elseif eft == 6 then
@@ -283,6 +289,12 @@ function heal_mob(mob, amt)
   mob.hp += amt
   mob.flash = 10
   add_float("+"..amt, mob.x * 8, mob.y * 8, 11)
+end
+
+function stun_mob(mob)
+  mob.stun = true
+  mob.flash = 10
+  add_float("stun", mob.x * 8 - 3, mob.y * 8, 7)
 end
 
 function spawn_mobs()

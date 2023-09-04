@@ -58,7 +58,12 @@ function update_ai_turn()
 
   if a_t == 1 then
     _upd = update_game
-    check_end()
+    if check_end() then
+      if player.stun then
+        player.stun = false
+        do_ai()
+      end
+    end
   end
 end
 
