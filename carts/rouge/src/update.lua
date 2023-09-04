@@ -33,9 +33,7 @@ function update_pturn()
     player:mov()
   end
 
-  if a_t == 1 then
-    local tle = mget(player.x, player.y)
-    
+  if a_t == 1 then    
     _upd = update_game
 
     if trigger_step() then return end

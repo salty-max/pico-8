@@ -33,7 +33,7 @@ function draw_windows()
       print(txt, wx, wy, c)
 
       if i == w.cur then
-        spr(64, wx - 5 + min(sin(time())), wy)
+        spr(255, wx - 5 + min(sin(time())), wy)
       end
 
       wy += 6

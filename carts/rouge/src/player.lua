@@ -32,15 +32,14 @@ function move_player(dx, dy)
 end
 
 function trigger_bump(tile, dx, dy)
-  if tile == 6 then
+  if tile == 64 then
     -- tablets
-  if floor == 0 then
-    show_dialog({"", " welcome to my", " cheaply-made tower!", "", " inside: briefly", " trained monsters, ", " puzzles i forgot to", " finish, and the", " famous glowing rock!", "", " climb, if you dare!", " mwa ha ha ha ha ha", " *cough* *cough*", ""})
-  end
-  if floor == win_flr then
+    if floor == 0 then
+      show_dialog({"", " welcome to my", " cheaply-made tower!", "", " inside: briefly", " trained monsters, ", " puzzles i forgot to", " finish, and the", " famous glowing rock!", "", " climb, if you dare!", " mwa ha ha ha ha ha", " *cough* *cough*", ""})
+    end
+  elseif tile == 109 then
     win = true
-  end
-  elseif tile == 7 or tile == 8 then
+  elseif tile == 65 or tile == 66 then
     -- pots
     sfx(59)
     mset(dx, dy, 1)
@@ -49,14 +48,14 @@ function trigger_bump(tile, dx, dy)
       take_item(itm)
       show_msg("you found a " .. items.name[itm] .. "!", 60)
     end
-  elseif tile == 10 or tile == 12 then
+  elseif tile == 68 or tile == 70 then
     -- chests
     sfx(61)
     mset(dx, dy, tile - 1)
     local itm = flr(rnd(#items.name) + 1)
     take_item(itm)
     show_msg("you found a " .. items.name[itm] .. "!", 60)
-  elseif tile == 13 then
+  elseif tile == 71 then
     -- doors
     sfx(62)
     mset(dx, dy, 1)
@@ -66,7 +65,7 @@ end
 function trigger_step()
   local tle = mget(player.x, player.y)
 
-  if tle == 14 then
+  if tle == 72 then
     fade_out()
     gen_floor(floor + 1)
     show_flr_msg()

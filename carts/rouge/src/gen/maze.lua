@@ -68,7 +68,7 @@ function fill_ends()
     for mx = 0, 15 do
       for my = 0, 15 do
         tle = mget(mx, my)
-        if  can_carve(mx ,my, true) and tle != 14 and tle != 15 then
+        if  can_carve(mx ,my, true) and tle != 72 and tle != 73 then
           filled = true
           mset(mx, my, 2)
           snapshot()

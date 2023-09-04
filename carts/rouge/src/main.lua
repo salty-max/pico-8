@@ -41,6 +41,8 @@ function _init()
 end
 
 function start_game()
+  -- timer for map animation
+  t_ani = 0
   -- fade percentage (1 ==  fully opaque)
   fade_perc = 1
   -- buffer for inputs

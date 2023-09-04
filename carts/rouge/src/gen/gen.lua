@@ -9,7 +9,7 @@ function gen_floor(f)
   elseif floor == win_flr then
     copy_map(32, 0)
   else
-    fog = blank_map(1)
+    fog = blank_map(0)
     map_gen()
   end
 
@@ -33,6 +33,7 @@ function map_gen()
   prettify_walls()
   place_doors()
   spawn_mobs()
+  deco_rooms()
 end
 
 function snapshot()

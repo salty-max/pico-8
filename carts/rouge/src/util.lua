@@ -107,7 +107,7 @@ function copy_map(mx, my)
       tle = mget(mx + x, my + y)
       mset(x, y, tle)
 
-      if tle == 15 then
+      if tle == 73 then
         player.x, player.y = x, y
       end
     end
