@@ -1,5 +1,5 @@
 function get_frame(a)
-  return a[flr(t / 15) % #a + 1]
+  return a[flr(t / 12) % #a + 1]
 end
 
 function draw_spr(s, x, y, c, flp)
@@ -75,7 +75,7 @@ function blank_map(dflt)
 end
 
 function calc_dist(tx, ty)
-  local cand, step = {}, 0
+  local cand, step, cand_new = {}, 0
   d_map = blank_map(-1)
   add(cand, { x = tx, y = ty })
   d_map[tx][ty] = step
@@ -83,7 +83,7 @@ function calc_dist(tx, ty)
   repeat
     step += 1
 
-    local cand_new = {}
+    cand_new = {}
     for c in all(cand) do
       for d = 1, 4 do
         local dx, dy = c.x + dir_x[d], c.y + dir_y[d]
@@ -100,6 +100,16 @@ function calc_dist(tx, ty)
   until #cand == 0
 end
 
-function get_rnd(arr)
-  return arr[1 + flr(rnd(#arr))]
+function copy_map(mx, my)
+  local tle
+  for x = 0, 15 do
+    for y = 0, 15 do
+      tle = mget(mx + x, my + y)
+      mset(x, y, tle)
+
+      if tle == 73 then
+        player.x, player.y = x, y
+      end
+    end
+  end
 end

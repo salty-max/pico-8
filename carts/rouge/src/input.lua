@@ -19,7 +19,9 @@ function handle_butt(b)
 
   if b < 4 then
     move_player(dir_x[b + 1], dir_y[b + 1])
-  elseif b == 5 then
+  elseif b == 4 then
     show_inv()
+  elseif b == 5 then
+    gen_floor(floor + 1)
   end
 end

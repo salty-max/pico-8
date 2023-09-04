@@ -1,14 +1,9 @@
 function draw_game()
   cls(0)
+  if fade_perc == 1 then return end
   map()
 
-  -- for x = 0, 15 do
-  --   for y = 0, 15 do
-  --     if d_map[x][y] > 0 then
-  --       print(d_map[x][y], x * 8, y * 8, 8)
-  --     end
-  --   end
-  -- end
+  ani_map()
 
   for m in all(d_mobs) do
     m.die -= 1
@@ -63,6 +58,11 @@ function draw_gover()
   o_print_8("u ded", 54, 60, 7, 0)
 end
 
+function draw_win()
+  cls(3)
+  o_print_8("u win", 54, 60, 7, 0)
+end
+
 function draw_mob(m)
   local c = m.c
   if m.flash > 0 then
@@ -70,4 +70,24 @@ function draw_mob(m)
     c = 7
   end
   draw_spr(get_frame(m.anim), m.x * 8 + m.ox, m.y * 8 + m.oy, c, m.flp)
+end
+
+function ani_map()
+  t_ani += 1
+  if (t_ani < 15) return
+  t_ani = 0
+
+  for x = 0, 15 do
+    for y = 0, 15 do
+      local tle = mget(x, y)
+      if tle == 112 or tle == 114 then
+        tle += 1
+      elseif tle == 113 or tle == 115 then
+        tle -= 1
+      end
+
+      mset(x, y, tle)
+    end
+  end
+  
 end

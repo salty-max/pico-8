@@ -14,12 +14,13 @@ function add_mob(type, mx, my)
     def_max = 0,
     hp = bestiary.hp[type],
     hp_max = bestiary.hp[type],
+    stun = false,
     los = bestiary.los[type],
     task = ai_wait
   }
 
   for i = 0, 3 do
-    add(m.anim, bestiary.anim[type] + i)
+    add(m.anim, bestiary.sp[type] + i)
   end
 
   add(mobs, m)
@@ -115,7 +116,11 @@ function do_ai()
   for m in all(mobs) do
     if m != player then
       m.mov = nil
-      moving = m:task() or moving
+      if m.stun then
+        m.stun = false
+      else
+        moving = m:task() or moving
+      end
     end
   end
 
@@ -170,13 +175,13 @@ function ai_chase(self)
           end
 
           if dst == bdst then
-            add(cand, { x = dx, y = dy })
+            add(cand, i)
           end
         end
       end
       if #cand > 0 then
-        local c = get_rnd(cand)
-        mob_walk(self, c.x, c.y)
+        local c = rnd(cand)
+        mob_walk(self, dir_x[c], dir_y[c])
         return true
       end
     end
@@ -241,12 +246,12 @@ function update_stats()
   local atk, def_min, def_max = player.base_atk, 0, 0
 
   if eqp[1] then
-    atk += items.stat_1[eqp[1]]
+    atk += items.stat1[eqp[1]]
   end
 
   if eqp[2] then
-    def_min += items.stat_1[eqp[2]]
-    def_max += items.stat_2[eqp[2]]
+    def_min += items.stat1[eqp[2]]
+    def_max += items.stat2[eqp[2]]
   end
 
   player.atk = atk
@@ -255,11 +260,27 @@ function update_stats()
 end
 
 function consume(mob, itm)
-  local eft = items.stat_1[itm]
+  local eft = items.stat1[itm]
+
+  show_msg(items.name[itm].. " " .. items.desc[itm] .. "!", 60)
 
   if eft == 1 then
     -- heal
-    heal_mob(mob, items.stat_2[itm])
+    heal_mob(mob, 1)
+  elseif eft == 2 then
+    -- bug heal
+    heal_mob(mob, 3)
+  elseif eft == 3 then
+    -- hp max ++
+    mob.hp_max += 1
+    heal_mob(mob, 1)
+  elseif eft == 4 then
+    -- stun
+    stun_mob(mob)
+  elseif eft == 5 then
+    -- curse
+  elseif eft == 6 then
+    -- bless
   end
 end
 
@@ -268,4 +289,65 @@ function heal_mob(mob, amt)
   mob.hp += amt
   mob.flash = 10
   add_float("+"..amt, mob.x * 8, mob.y * 8, 11)
+end
+
+function stun_mob(mob)
+  mob.stun = true
+  mob.flash = 10
+  add_float("stun", mob.x * 8 - 3, mob.y * 8, 7)
+end
+
+function spawn_mobs()
+  m_pool = {}
+  for i = 2, #bestiary.name do
+    if bestiary.min_f[i] <= floor and bestiary.max_f[i] >= floor then
+      add(m_pool, i)
+    end
+  end
+
+  if (#m_pool == 0) return
+  
+  local placed, min_mobs = 0, 3
+  local min_mobs = split("3, 5, 7, 9, 10, 11, 12, 13")
+  local max_mobs = split("6, 10, 14, 18, 20, 22, 24, 26")
+
+  local r_pot = {}
+  for r in all(rooms) do
+    add(r_pot, r)
+  end
+
+  repeat
+    local r = rnd(r_pot)
+    placed += infest_room(r)
+    del(r_pot, r)
+  until #r_pot == 0 or placed > max_mobs[floor]
+
+  if placed < min_mobs[floor] then
+    repeat
+      local x, y
+      
+      repeat
+        x, y = flr(rnd(16)), flr(rnd(16))
+      until is_walkable(x, y, "check_mobs") and is_floor_tile(x, y)
+
+      add_mob(rnd(m_pool), x, y)
+      placed += 1
+    until placed >= min_mobs[floor]
+  end
+end
+
+function infest_room(r)
+  local target, x, y = 2 + flr(rnd(r.w * r.h / 6 - 1))
+  target = min(5, target)
+
+  for i = 1, target do
+    repeat
+      x = r.x + flr(rnd(r.w))
+      y = r.y + flr(rnd(r.h))
+    until is_walkable(x, y, "check_mobs")
+    local m_idx = rnd(m_pool)
+    add_mob(m_idx, x, y)
+  end
+
+  return target
 end

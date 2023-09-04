@@ -33,7 +33,7 @@ function draw_windows()
       print(txt, wx, wy, c)
 
       if i == w.cur then
-        spr(64, wx - 5 + min(sin(time())), wy)
+        spr(255, wx - 5 + min(sin(time())), wy)
       end
 
       wy += 6
@@ -217,4 +217,8 @@ function use_item()
     inv_box.dur = 0
     stat_box.dur = 0
   end
+end
+
+function show_flr_msg()
+  show_msg("floor " .. floor, 60)
 end

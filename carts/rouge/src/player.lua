@@ -10,7 +10,6 @@ function move_player(dx, dy)
   else
     -- not walkable
     mob_bump(player, dx, dy)
-    skip_ai = true
     a_t = 0
     _upd = update_pturn
 
@@ -23,6 +22,8 @@ function move_player(dx, dy)
       -- interact
       if fget(tile, 1) then
         trigger_bump(tile, destx, desty)
+      else
+        skip_ai = true
       end
     end
   end
@@ -31,39 +32,77 @@ function move_player(dx, dy)
 end
 
 function trigger_bump(tile, dx, dy)
-  if tile == 6 then
+  if tile == 64 then
     -- tablets
-    show_dialog({ "welcome to my lair", "", "climb the tower", "if you dare", "", "bwa ha ha ha ha", "*cough* *cough*" }, 120)
-  elseif tile == 7 or tile == 8 then
+    if floor == 0 then
+      show_dialog({"", " welcome to my", " cheaply-made tower!", "", " inside: briefly", " trained monsters, ", " puzzles i forgot to", " finish, and the", " famous glowing rock!", "", " climb, if you dare!", " mwa ha ha ha ha ha", " *cough* *cough*", ""})
+    end
+  elseif tile == 109 then
+    win = true
+  elseif tile == 65 or tile == 66 then
     -- pots
     sfx(59)
-    mset(dx, dy, 1)
-    if rnd(4) < 1 then
-      local itm = flr(rnd(#items.name) + 1)
-      take_item(itm)
-      show_msg("you found a " .. items.name[itm] .. "!", 60)
+    local dbr_pool = split("9, 14, 15")
+    mset(dx, dy, rnd(dbr_pool))
+    if rnd(3) < 1 and floor > 0 then
+      if rnd(5) < 1 then
+        add_mob(rnd(m_pool), dx, dy)
+      else
+        if get_free_slot() == -1 then
+          show_msg("inventory full!", 60)
+          skip_ai = true
+        else
+          local itm = rnd(flr_i_pool_com)
+          take_item(itm)
+          show_msg("found " .. items.name[itm] .. "!", 60)
+        end
+      end
     end
-  elseif tile == 10 or tile == 12 then
+  elseif tile == 68 or tile == 70 then
     -- chests
-    sfx(61)
-    mset(dx, dy, tile - 1)
-    local itm = flr(rnd(#items.name) + 1)
-    take_item(itm)
-    show_msg("you found a " .. items.name[itm] .. "!", 60)
-  elseif tile == 13 then
+    
+    if get_free_slot() == -1 then
+      sfx(60)
+      show_msg("inventory full!", 60)
+    else
+      sfx(61)
+      mset(dx, dy, tile - 1)
+      local itm = tile == 70 and get_rare_item() or rnd(flr_i_pool_com)
+      take_item(itm)
+      show_msg("found " .. items.name[itm] .. "!", 60)
+    end
+  elseif tile == 71 then
     -- doors
     sfx(62)
     mset(dx, dy, 1)
   end
 end
 
+function trigger_step()
+  local tle = mget(player.x, player.y)
+
+  if tle == 72 then
+    fade_out()
+    gen_floor(floor + 1)
+    show_flr_msg()
+    return true
+  end
+
+  return false
+end
+
 function check_end()
-  if player.hp <= 0 then
+  if win then
+    _upd = update_win
+    _drw = draw_win
+    windows = {}
+    fade_out(0.02)
+    return false
+  elseif player.hp <= 0 then
     _upd = update_gover
     _drw = draw_gover
     windows = {}
     fade_out(0.02)
-    reload(0x2000, 0x2000, 0x1000)
     return false
   end
 
@@ -104,7 +143,7 @@ function throw()
         consume(mob, itm)
       else
         sfx(58)
-        hit_mob(nil, mob, items.stat_1[itm])
+        hit_mob(nil, mob, items.stat1[itm])
       end
     end
   end
