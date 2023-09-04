@@ -48,9 +48,10 @@ end
 
 function place_doors()
   for d in all(doors) do
-    local tle = mget(d.x, d.y)
-    if (tle == 1 or tle == 4 or tle == 5 or tle == 6 or tle == 7) and is_walkable(d.x, d.y) and is_door(d.x, d.y) and not is_next_to_tile(d.x, d.y, 71) then
-      mset(d.x, d.y, 71)
+    local dx, dy = d.x, d.y
+    local tle = mget(dx, dy)
+    if (tle == 1 or tle == 4 or tle == 5 or tle == 6 or tle == 7) and is_walkable(dx, dy) and is_door(dx, dy) and not is_next_to_tile(dx, dy, 71) then
+      mset(dx, dy, 71)
       snapshot()
     end
   end
@@ -89,14 +90,19 @@ function prettify_walls()
 end
 
 function deco_rooms()
+  farn_arr = split("1, 9, 10, 10, 10, 11, 11, 11, 12, 13")
+  dirt_arr = split("1, 9, 14, 15")
+  pots_arr = split("1, 1, 65, 66")
+  
   for r in all(rooms) do
     local funcs, func = {deco_carpet, deco_dirt, deco_torch, deco_farn, deco_pots}
-
     func = rnd(funcs)
 
     for x = 0, r.w - 1 do
-      for y = 0, r.h - 1 do
-        func(r, r.x + x, r.y + y, x, y)
+      for y = r.h - 1, 1, -1 do
+        if mget(r.x + x, r.y + y) == 1 then
+          func(r, r.x + x, r.y + y, x, y)
+        end
       end
     end
   end
@@ -104,20 +110,17 @@ end
 
 function deco_carpet(r, tx, ty, x, y)
   deco_torch(r, tx, ty, x, y)
-  if x > 0 and y > 0 and x < r.w - 1 and y < r.h - 1 then
+  if x > 0 and x < r.w - 1 and y < r.h - 1 then
     mset(tx, ty, 8)
   end
 end
 
 function deco_dirt(r, tx, ty)
-  if mget(tx, ty) == 1 then
-    local t_arr = split("1, 9, 14, 15")
-    mset(tx, ty, rnd(t_arr))
-  end
+  mset(tx, ty, rnd(dirt_arr))
 end
 
 function deco_torch(r, tx, ty, x ,y)
-  if rnd(3) > 1 and y % 2 == 1 and mget(tx, ty) == 1 and not is_next_to_tile(tx, ty, 71) then
+  if rnd(3) > 1 and y % 2 == 1 and not is_next_to_tile(tx, ty, 71) then
     if x == 0 then
       mset(tx, ty, 112)
     elseif x == r.w - 1 then
@@ -127,16 +130,12 @@ function deco_torch(r, tx, ty, x ,y)
 end
 
 function deco_farn(r, tx, ty)
-  if mget(tx, ty) == 1 then
-    local t_arr = split("1, 9, 10, 10, 10, 11, 11, 11, 12, 13")
-    mset(tx, ty, rnd(t_arr))
-  end
+  mset(tx, ty, rnd(farn_arr))
 end
 
 function deco_pots(r, tx, ty)
-  if mget(tx, ty) == 1 and is_walkable(tx, ty, "check_mobs") and not is_next_to_tile(tx ,ty, 71) and not sig_comp(get_sig(tx, ty), 0, 0b00001111) then
-    local t_arr = split("1, 1, 65, 66")
-    mset(tx, ty, rnd(t_arr))
+  if is_walkable(tx, ty, "check_mobs") and not is_next_to_tile(tx ,ty, 71) and not sig_comp(get_sig(tx, ty), 0, 0b00001111) then
+    mset(tx, ty, rnd(pots_arr))
   end
 end
 
@@ -149,4 +148,34 @@ function is_next_to_tile(x, y, tle)
   end
 
   return false
+end
+
+function place_chests()
+  local chest_dice, r_pot, rare = split("1, 1, 1, 1, 2, 3"), {}, true
+  local n_to_place = rnd(chest_dice)
+  for r in all(rooms) do
+    add(r_pot, r)
+  end
+
+  while n_to_place > 0 and #r_pot > 0 do
+    local r = rnd(r_pot)
+    del(r_pot, r)
+    place_chest(r, rare)
+    rare = false
+    n_to_place -= 1
+  end
+end
+
+function place_chest(r, rare)
+  local x, y
+      
+  repeat
+    x, y = r.x + flr(rnd(r.w - 2)) + 1, r.y + flr(rnd(r.h - 2)) + 1
+  until mget(x, y) == 1 and not is_next_to_tile(x, y, 71)
+
+  if rare then
+    mset(x, y, 70)
+  else
+    mset(x, y, 68)
+  end
 end

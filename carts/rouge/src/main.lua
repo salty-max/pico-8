@@ -2,21 +2,8 @@
 -- 1: player, 240, 1 ,5, 4
 -- 2: slime, 192, 1, 2, 4
 
-bestiary = {
-  name = split("player,slime"),
-  anim = split("240, 192"), -- first frame of animation
-  atk = split("1, 1"), -- attack power
-  def = split("0, 0"), -- defense rating
-  hp = split("5, 2"), -- health
-  los = split("4, 4") -- line of sight
-}
-
-items = {
-  name = split("iron sword,leather armor,sausage,red potion,kunai,wooden stick"),
-  kind = split("wep,arm,fud,drk,thr,wep"),
-  stat_1 = split("2, 0, 1, 1, 2, 1"),
-  stat_2 = split("0, 2, 2, 5, 0, 0"),
-}
+items={name=split("butter knife,cheese knife,paring knife,utility knife,chef's knife,meat cleaver,paper apron,cotton apron,rubber apron,leather apron,chef's apron,butcher's apron,spoon,salad fork,fish fork,granny's fork,food_1,food_2,food_3,food_4,food_5,food_6"),kind=split("wep,wep,wep,wep,wep,wep,arm,arm,arm,arm,arm,arm,thr,thr,thr,thr,fud,fud,fud,fud,fud,fud"),stat1=split("1,2,3,4,5,6,0,0,0,0,1,2,1,2,3,4,1,2,3,4,5,6"),stat2=split("0,0,0,0,0,0,1,2,3,4,3,3,0,0,0,0,0,0,0,0,0,0"),min_f=split("1,2,3,4,5,6,1,2,3,4,5,6,1,2,3,4,1,1,1,1,1,1"),max_f=split("3,4,5,6,7,8,3,4,5,6,7,8,4,6,7,8,8,8,8,8,8,8"),desc=split(",,,,,,,,,,,,,,,,heals,heals a lot,increases hp,stuns,is cursed,is blessed")}
+bestiary={name=split("player,slime,melt,shoggoth,mantis-man,giant scorpion,ghost,golem,drake"),hp=split("5,1,2,3,3,4,5,14,5"),atk=split("1,1,2,1,2,3,3,5,8"),def=split("0,0,0,0,0,0,0,0,0"),los=split("4,4,4,4,4,4,4,4,4"),sp=split("240,192,196,200,204,208,212,216,220"),min_f=split("0,1,2,3,4,5,6,7,8"),max_f=split("0,3,4,5,6,7,8,8,8"),special=split(",,,spawn?,fast?,stun,curse?,slow,")}
 
 function _init()
   t = 0
@@ -72,7 +59,9 @@ function start_game()
 
   win = false
   win_flr = 9
-  
+
+  make_item_pools()
+
   gen_floor(0)
 end
 

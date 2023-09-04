@@ -19,7 +19,7 @@ function add_mob(type, mx, my)
   }
 
   for i = 0, 3 do
-    add(m.anim, bestiary.anim[type] + i)
+    add(m.anim, bestiary.sp[type] + i)
   end
 
   add(mobs, m)
@@ -241,12 +241,12 @@ function update_stats()
   local atk, def_min, def_max = player.base_atk, 0, 0
 
   if eqp[1] then
-    atk += items.stat_1[eqp[1]]
+    atk += items.stat1[eqp[1]]
   end
 
   if eqp[2] then
-    def_min += items.stat_1[eqp[2]]
-    def_max += items.stat_2[eqp[2]]
+    def_min += items.stat1[eqp[2]]
+    def_max += items.stat2[eqp[2]]
   end
 
   player.atk = atk
@@ -255,11 +255,11 @@ function update_stats()
 end
 
 function consume(mob, itm)
-  local eft = items.stat_1[itm]
+  local eft = items.stat1[itm]
 
   if eft == 1 then
     -- heal
-    heal_mob(mob, items.stat_2[itm])
+    heal_mob(mob, items.stat2[itm])
   end
 end
 
@@ -271,28 +271,55 @@ function heal_mob(mob, amt)
 end
 
 function spawn_mobs()
-  local placed, rpot, min_mobs = 0, {}, 3
+  m_pool = {}
+  for i = 2, #bestiary.name do
+    if bestiary.min_f[i] <= floor and bestiary.max_f[i] >= floor then
+      add(m_pool, i)
+    end
+  end
 
+  if (#m_pool == 0) return
+  
+  local placed, min_mobs = 0, 3
+  local min_mobs = split("3, 5, 7, 9, 10, 11, 12, 13")
+  local max_mobs = split("6, 10, 14, 18, 20, 22, 24, 26")
+
+  local r_pot = {}
   for r in all(rooms) do
-    add(rpot, r)
+    add(r_pot, r)
   end
 
   repeat
-    local r = rnd(rpot)
+    local r = rnd(r_pot)
     placed += infest_room(r)
-    del(rpot, r)
-  until #rpot == 0 or placed >= min_mobs
+    del(r_pot, r)
+  until #r_pot == 0 or placed > max_mobs[floor]
+
+  if placed < min_mobs[floor] then
+    repeat
+      local x, y
+      
+      repeat
+        x, y = flr(rnd(16)), flr(rnd(16))
+      until is_walkable(x, y, "check_mobs")
+
+      add_mob(rnd(m_pool), x, y)
+      placed += 1
+    until placed >= min_mobs[floor]
+  end
 end
 
 function infest_room(r)
-  local target, x, y = 2 + flr(rnd(3))
+  local target, x, y = 2 + flr(rnd(r.w * r.h / 6 - 1))
+  target = min(5, target)
 
   for i = 1, target do
     repeat
       x = r.x + flr(rnd(r.w))
       y = r.y + flr(rnd(r.h))
     until is_walkable(x, y, "check_mobs")
-    add_mob(2, x, y)
+    local m_idx = rnd(m_pool)
+    add_mob(m_idx, x, y)
   end
 
   return target

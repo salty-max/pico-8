@@ -22,6 +22,6 @@ function handle_butt(b)
   elseif b == 4 then
     show_inv()
   elseif b == 5 then
-    map_gen()
+    gen_floor(floor + 1)
   end
 end

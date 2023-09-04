@@ -43,18 +43,31 @@ function trigger_bump(tile, dx, dy)
     -- pots
     sfx(59)
     mset(dx, dy, 1)
-    if rnd(4) < 1 then
-      local itm = flr(rnd(#items.name) + 1)
-      take_item(itm)
-      show_msg("you found a " .. items.name[itm] .. "!", 60)
+    if rnd(3) < 1 and floor > 0 then
+      if rnd(5) < 1 then
+        add_mob(rnd(m_pool), dx, dy)
+      else
+        if get_free_slot() == -1 then
+          show_msg("inventory full!", 60)
+        else
+          local itm = rnd(flr_i_pool_com)
+          take_item(itm)
+          show_msg("you found a " .. items.name[itm] .. "!", 60)
+        end
+      end
     end
   elseif tile == 68 or tile == 70 then
     -- chests
     sfx(61)
     mset(dx, dy, tile - 1)
-    local itm = flr(rnd(#items.name) + 1)
-    take_item(itm)
-    show_msg("you found a " .. items.name[itm] .. "!", 60)
+    if get_free_slot() == -1 then
+      show_msg("inventory full!", 60)
+      skip_ai = true
+    else
+      local itm = tile == 70 and get_rare_item() or rnd(flr_i_pool_com)
+      take_item(itm)
+      show_msg("you found a " .. items.name[itm] .. "!", 60)
+    end
   elseif tile == 71 then
     -- doors
     sfx(62)
@@ -127,7 +140,7 @@ function throw()
         consume(mob, itm)
       else
         sfx(58)
-        hit_mob(nil, mob, items.stat_1[itm])
+        hit_mob(nil, mob, items.stat1[itm])
       end
     end
   end

@@ -1,5 +1,5 @@
 function get_frame(a)
-  return a[flr(t / 15) % #a + 1]
+  return a[flr(t / 12) % #a + 1]
 end
 
 function draw_spr(s, x, y, c, flp)
