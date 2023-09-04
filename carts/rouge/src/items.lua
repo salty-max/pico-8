@@ -56,3 +56,17 @@ function get_rare_item()
     return rnd(flr_i_pool_com)
   end
 end
+
+function handle_food_names()
+  local fud_names, fud = split("jerky,shnitzel,steak,gyros,fricassee,haggis,mett,kebab,burger,meatball,pizza,calzone,pasticio,chops,ham,ribs,roast,meatloaf,chili,stew,pie,taco,burrito,rolls,filet,salami,sandwich,cassoulet,yakitori,poutine")
+  local fud_adjs, adj = split("yellow,green,blue,purple,black,sweet,salty,spicy,strange,old,dry,wet,smooth,soft,crusty,pickled,sour,leftover,mom's,steamed,hairy,smoked,mini,stuffed,classic,marinated,bbq,savory,baked,juicy,sloppy,cheesy,hot,cold,zesty")
+
+  for i = 1,#items.name do
+    if items.kind[i] == "fud" then
+      fud, adj = rnd(fud_names), rnd(fud_adjs)
+      items.name[i] = adj.." "..fud
+      del(fud_names, fud)
+      del(fud_adjs, adj)
+    end
+  end
+end

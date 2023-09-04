@@ -257,9 +257,24 @@ end
 function consume(mob, itm)
   local eft = items.stat1[itm]
 
+  show_msg(items.name[itm].. " " .. items.desc[itm] .. "!", 60)
+
   if eft == 1 then
     -- heal
-    heal_mob(mob, items.stat2[itm])
+    heal_mob(mob, 1)
+  elseif eft == 2 then
+    -- bug heal
+    heal_mob(mob, 3)
+  elseif eft == 3 then
+    -- hp max ++
+    mob.hp_max += 1
+    heal_mob(mob, 1)
+  elseif eft == 4 then
+    -- stun
+  elseif eft == 5 then
+    -- curse
+  elseif eft == 6 then
+    -- bless
   end
 end
 
@@ -301,7 +316,7 @@ function spawn_mobs()
       
       repeat
         x, y = flr(rnd(16)), flr(rnd(16))
-      until is_walkable(x, y, "check_mobs")
+      until is_walkable(x, y, "check_mobs") and is_floor_tile(x, y)
 
       add_mob(rnd(m_pool), x, y)
       placed += 1

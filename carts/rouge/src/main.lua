@@ -61,6 +61,9 @@ function start_game()
   win_flr = 9
 
   make_item_pools()
+  handle_food_names()
+
+  take_item(20)
 
   gen_floor(0)
 end

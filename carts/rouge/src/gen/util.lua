@@ -14,3 +14,8 @@ function get_sig(x, y)
 
   return sig
 end
+
+function is_floor_tile(x, y)
+  local tle = mget(x, y)
+  return tle == 1 or tle == 4 or tle == 5 or tle == 6 or tle == 7
+end
