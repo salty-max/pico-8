@@ -15,6 +15,8 @@ function add_mob(type, mx, my)
     hp = bestiary.hp[type],
     hp_max = bestiary.hp[type],
     stun = false,
+    charge = 1,
+    spec = bestiary.spec[type],
     los = bestiary.los[type],
     task = ai_wait
   }
@@ -148,7 +150,12 @@ function ai_chase(self)
     -- attack player
     local dx, dy = player.x - self.x, player.y - self.y
     mob_bump(self, dx, dy)
-    hit_mob(self, player)
+    if self.spec == "stun" and self.charge > 0 then
+      stun_mob(player)
+      self.charge -= 1
+    else
+      hit_mob(self, player)
+    end
     sfx(57)
     return true
   else
