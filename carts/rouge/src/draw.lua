@@ -54,13 +54,30 @@ function draw_game()
 end
 
 function draw_gover()
-  cls(2)
-  o_print_8("u ded", 54, 60, 7, 0)
-end
+  cls(0)
+  palt(12, true)
+  spr(gover_spr, gover_x, 30, gover_w, 2)
+  palt()
 
-function draw_win()
-  cls(3)
-  o_print_8("u win", 54, 60, 7, 0)
+  local txt = ""
+  if win then
+    txt = "you are now a master chef!"
+  else
+    txt = "killed by a " .. st_killed
+  end
+
+  print_center(txt, 44, 6)
+  
+  color(5)
+  cursor(46, 58)
+  if not win then
+    print("floor: 0".. floor)
+  end
+  print("steps: ".. st_steps)
+  print("kills: ".. st_kills)
+  print("meals: ".. st_meals)
+
+  print("press ❎", 48, 90, 5 + min(abs(sin(time() / 2) * 2), 1))
 end
 
 function draw_mob(m)

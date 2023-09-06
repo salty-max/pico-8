@@ -5,6 +5,7 @@ function move_player(dx, dy)
   if is_walkable(destx, desty, "check_mobs") then
     sfx(63)
     mob_walk(player, dx, dy)
+    if floor > 0 then st_steps += 1 end
     a_t = 0
     _upd = update_pturn
   else
@@ -35,7 +36,7 @@ function trigger_bump(tile, dx, dy)
   if tile == 64 then
     -- tablets
     if floor == 0 then
-      show_dialog({"", " welcome to my", " cheaply-made tower!", "", " inside: briefly", " trained monsters, ", " puzzles i forgot to", " finish, and the", " famous glowing rock!", "", " climb, if you dare!", " mwa ha ha ha ha ha", " *cough* *cough*", ""})
+      show_dialog({"", " philippe,", "", " welcome to hell's", " kitchen!", "", " seek the fabled", " blood knacky to", " prove your culinary", " might but beware the", " accursed wait staff!", "", " bon appetit!", " mwa ha ha ha ha ha", "", " g. ramsay", ""})
     end
   elseif tile == 109 then
     win = true
@@ -94,12 +95,18 @@ end
 
 function check_end()
   if win then
-    _upd = update_win
-    _drw = draw_win
+    gover_spr = 112
+    gover_x = 17
+    gover_w = 12
+    _upd = update_gover
+    _drw = draw_gover
     windows = {}
     fade_out(0.02)
     return false
   elseif player.hp <= 0 then
+    gover_spr = 80
+    gover_x = 38
+    gover_w = 7
     _upd = update_gover
     _drw = draw_gover
     windows = {}

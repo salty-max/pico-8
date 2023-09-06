@@ -1,5 +1,6 @@
 function add_mob(type, mx, my)
   local m = {
+    name = bestiary.name[type],
     x = mx,
     y = my,
     ox = 0,
@@ -119,6 +120,11 @@ function hit_mob(am, dm, raw)
   add_float("-" .. dmg, dm.x * 8, dm.y * 8, 9)
 
   if dm.hp <= 0 then
+    if dm == player then
+      st_killed = am.name
+    else
+      st_kills += 1
+    end
     add(d_mobs, dm)
     del(mobs, dm)
     dm.die = 20
@@ -284,6 +290,8 @@ end
 
 function consume(mob, itm)
   local eft = items.stat1[itm]
+
+  if mob == player then st_meals += 1 end
 
   show_msg(items.name[itm].. " " .. items.desc[itm] .. "!", 60)
 

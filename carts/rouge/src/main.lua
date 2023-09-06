@@ -65,6 +65,8 @@ function start_game()
   win = false
   win_flr = 9
 
+  st_steps, st_kills, st_meals, st_killed = 0, 0, 0, ""
+
   make_item_pools()
   handle_food_names()
 

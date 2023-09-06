@@ -22,6 +22,6 @@ function handle_butt(b)
   elseif b == 4 then
     show_inv()
   elseif b == 5 then
-    gen_floor(floor + 1)
+    win = true
   end
 end
