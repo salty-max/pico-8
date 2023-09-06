@@ -3,6 +3,10 @@ function gen_floor(f)
   mobs = {}
   add(mobs, player)
   fog = blank_map(0)
+  
+  if floor == 1 then
+    music(0)
+  end
 
   if floor == 0 then
     copy_map(16, 0)
@@ -10,7 +14,7 @@ function gen_floor(f)
     copy_map(32, 0)
   else
     make_flr_i_pool()
-    fog = blank_map(0)
+    fog = blank_map(1)
     map_gen()
     unfog()
   end
@@ -28,7 +32,7 @@ function map_gen()
     maze_worm()
     place_flags()
     carve_doors()
-    
+
     if #flag_lib > 1 then
       debug[1] = "reconnected area"
     end

@@ -12,13 +12,7 @@ end
 
 function update_gover()
   if btnp(5) then
-    fade_out()
-    start_game()
-  end
-end
-
-function update_win()
-  if btnp(5) then
+    sfx(54)
     fade_out()
     start_game()
   end
@@ -69,6 +63,7 @@ end
 
 function update_inv()
   if btnp(5) then
+    sfx(53)
     if curr_box == inv_box then
       _upd = update_game
       inv_box.dur = 0
@@ -80,6 +75,7 @@ function update_inv()
   end
 
   if btnp(4) then
+    sfx(54)
     if curr_box == inv_box and inv_box.cur != 3 then
       show_use_menu()
     elseif curr_box == itm_menu_box then

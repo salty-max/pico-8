@@ -20,8 +20,10 @@ function handle_butt(b)
   if b < 4 then
     move_player(dir_x[b + 1], dir_y[b + 1])
   elseif b == 4 then
+    sfx(54)
     show_inv()
   elseif b == 5 then
-    win = true
+    player.hp = 0
+    st_killed = "slime"
   end
 end

@@ -69,7 +69,7 @@ function draw_gover()
   print_center(txt, 44, 6)
   
   color(5)
-  cursor(46, 58)
+  cursor(45, 58)
   if not win then
     print("floor: 0".. floor)
   end

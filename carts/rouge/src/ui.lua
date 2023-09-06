@@ -148,9 +148,11 @@ end
 
 function move_menu(w)
   if btnp(2) then
+    sfx(56)
     w.cur -= 1
     w.cur = (curr_box == inv_box and w.cur == 3) and 2 or w.cur
   elseif btnp(3) then
+    sfx(56)
     w.cur += 1
     w.cur = (curr_box == inv_box and w.cur == 3) and 4 or w.cur
   end

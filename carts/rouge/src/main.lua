@@ -28,6 +28,7 @@ function _init()
 end
 
 function start_game()
+  music(63)
   -- timer for map animation
   t_ani = 0
   -- fade percentage (1 ==  fully opaque)
@@ -69,10 +70,6 @@ function start_game()
 
   make_item_pools()
   handle_food_names()
-
-  take_item(20)
-  take_item(21)
-  take_item(22)
 
   gen_floor(0)
 end

@@ -35,8 +35,9 @@ end
 function trigger_bump(tile, dx, dy)
   if tile == 64 then
     -- tablets
+    sfx(54)
     if floor == 0 then
-      show_dialog({"", " philippe,", "", " welcome to hell's", " kitchen!", "", " seek the fabled", " blood knacky to", " prove your culinary", " might but beware the", " accursed wait staff!", "", " bon appetit!", " mwa ha ha ha ha ha", "", " g. ramsay", ""})
+      show_dialog(split(" _ philippe,_ _ welcome to hell's_ kitchen!_ _ seek the fabled_ blood knacky to_ prove your culinary_ might but beware the_ accursed wait staff!_ _ bon appetit!_ mwa ha ha ha ha ha_ _ g. ramsay_ ", "_"))
     end
   elseif tile == 109 then
     win = true
@@ -83,6 +84,7 @@ function trigger_step()
   local tle = mget(player.x, player.y)
 
   if tle == 72 then
+    sfx(55)
     player.bless = 0
     fade_out()
     gen_floor(floor + 1)
@@ -95,26 +97,23 @@ end
 
 function check_end()
   if win then
-    gover_spr = 112
-    gover_x = 17
-    gover_w = 12
-    _upd = update_gover
-    _drw = draw_gover
-    windows = {}
-    fade_out(0.02)
+    music(23)
+    gover_spr, gover_x, gover_w = 112, 17, 12
+    show_end()
     return false
   elseif player.hp <= 0 then
-    gover_spr = 80
-    gover_x = 38
-    gover_w = 7
-    _upd = update_gover
-    _drw = draw_gover
-    windows = {}
-    fade_out(0.02)
+    music(21)
+    gover_spr, gover_x, gover_w = 80, 38, 7
+    show_end()
     return false
   end
 
   return true
+end
+
+function show_end()
+  wind, _upd, _drw = {}, update_gover, draw_gover
+  fade_out(0.02)
 end
 
 function unfog()
@@ -142,6 +141,8 @@ end
 
 function throw()
   local itm, tx, ty = inv[thr_slot], throw_tile()
+
+  sfx(52)
 
   if is_in_bounds(tx, ty) then
     local mob = get_mob_at(tx, ty)

@@ -318,6 +318,7 @@ function consume(mob, itm)
 end
 
 function heal_mob(mob, amt)
+  sfx(51)
   amt = min(amt, mob.hp_max - mob.hp)
   mob.hp += amt
   mob.flash = 10
@@ -328,6 +329,7 @@ function stun_mob(mob)
   mob.stun = true
   mob.flash = 10
   add_float("stun", mob.x * 8 - 3, mob.y * 8, 7)
+  sfx(51)
 end
 
 function bless_mob(mob, val)
@@ -346,6 +348,7 @@ function bless_mob(mob, val)
     del(mobs, mob)
     mob.die = 20
   end
+  sfx(51)
 end
 
 function spawn_mobs()
