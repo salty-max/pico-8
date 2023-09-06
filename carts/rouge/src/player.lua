@@ -82,6 +82,7 @@ function trigger_step()
   local tle = mget(player.x, player.y)
 
   if tle == 72 then
+    player.bless = 0
     fade_out()
     gen_floor(floor + 1)
     show_flr_msg()

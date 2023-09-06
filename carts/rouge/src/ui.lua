@@ -136,7 +136,14 @@ function show_inv()
   inv_box.col = col
   curr_box = inv_box
 
-  stat_box = add_window(5, 5, 84, 13, {"atk: "..player.atk.."   def: "..player.def_min.."-"..player.def_max})
+  local status = "ok"
+  if player.bless > 0 then
+    status = "bless"
+  elseif player.bless < 0 then
+    status = "curse"
+  end
+
+  stat_box = add_window(5, 5, 84, 13, {"atk:"..player.atk.." def:"..player.def_min.."-"..player.def_max.. " "..status})
 end
 
 function move_menu(w)

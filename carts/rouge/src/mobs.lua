@@ -15,7 +15,9 @@ function add_mob(type, mx, my)
     hp = bestiary.hp[type],
     hp_max = bestiary.hp[type],
     stun = false,
+    bless = 0,
     charge = 1,
+    last_moved = false,
     spec = bestiary.spec[type],
     los = bestiary.los[type],
     task = ai_wait
@@ -98,6 +100,16 @@ end
 
 function hit_mob(am, dm, raw)
   local dmg = am and am.atk or raw
+
+  -- add curse/bless
+  if dm.bless < 0 then
+    dmg *= 2
+  elseif dm.bless > 0 then
+    dmg = flr(dmg / 2)
+  end
+
+  dm.bless = 0
+
   local def = dm.def_min + flr(rnd(dm.def_max - dm.def_min + 1))
   dmg -= min(def, dmg)
 
@@ -121,7 +133,8 @@ function do_ai()
       if m.stun then
         m.stun = false
       else
-        moving = m:task() or moving
+        m.last_moved = m:task()
+        moving = m.last_moved or moving
       end
     end
   end
@@ -138,10 +151,7 @@ function ai_wait(self)
     self.task = ai_chase
     self.tx, self.ty = player.x, player.y
     add_float("!", self.x * 8 + 2, self.y * 8, 10)
-
-    return true
   end
-
   return false
 end
 
@@ -152,6 +162,10 @@ function ai_chase(self)
     mob_bump(self, dx, dy)
     if self.spec == "stun" and self.charge > 0 then
       stun_mob(player)
+      self.charge -= 1
+    elseif self.spec == "ghost" and self.charge > 0 then
+      hit_mob(self, player)
+      bless_mob(player, -1)
       self.charge -= 1
     else
       hit_mob(self, player)
@@ -169,6 +183,9 @@ function ai_chase(self)
       self.task = ai_wait
       add_float("?", self.x * 8 + 2, self.y * 8, 10)
     else
+      if self.spec == "slow" and self.last_moved then
+        return false
+      end
       local bdst, cand = 999, {}
       calc_dist(self.tx, self.ty)
       for i = 1, 4 do
@@ -193,7 +210,6 @@ function ai_chase(self)
       end
     end
   end
-
   return false
 end
 
@@ -286,8 +302,10 @@ function consume(mob, itm)
     stun_mob(mob)
   elseif eft == 5 then
     -- curse
+    bless_mob(mob, -1)
   elseif eft == 6 then
     -- bless
+    bless_mob(mob, 1)
   end
 end
 
@@ -302,6 +320,24 @@ function stun_mob(mob)
   mob.stun = true
   mob.flash = 10
   add_float("stun", mob.x * 8 - 3, mob.y * 8, 7)
+end
+
+function bless_mob(mob, val)
+  mob.bless = mid(-1, 1, mob.bless + val)
+  mob.flash = 10
+
+  local txt = "bless"
+  if val < 0 then
+    txt = "curse"
+  end
+
+  add_float(txt, mob.x * 8 - 5, mob.y * 8, 7)
+
+  if mob.spec == "ghost" and val > 0 then
+    add(d_mobs, mob)
+    del(mobs, mob)
+    mob.die = 20
+  end
 end
 
 function spawn_mobs()
