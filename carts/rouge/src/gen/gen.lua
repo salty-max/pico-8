@@ -18,16 +18,21 @@ function gen_floor(f)
 end
 
 function map_gen()
-  copy_map(48, 0)
+  repeat
+    copy_map(48, 0)
+    rooms = {}
+    roomap = blank_map(0)
+    doors = {}
 
-  rooms = {}
-  roomap = blank_map(0)
-  doors = {}
-
-  gen_rooms()
-  maze_worm()
-  place_flags()
-  carve_doors()
+    gen_rooms()
+    maze_worm()
+    place_flags()
+    carve_doors()
+    
+    if #flag_lib > 1 then
+      debug[1] = "reconnected area"
+    end
+  until #flag_lib == 1
   carve_scuts()
   start_end()
   fill_ends()

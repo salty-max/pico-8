@@ -16,7 +16,7 @@ end
 
 function handle_butt(b)
   if b < 0 then return end
-
+  if logo_t > 0 then logo_t = 0 end
   if b < 4 then
     move_player(dir_x[b + 1], dir_y[b + 1])
   elseif b == 4 then

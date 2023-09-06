@@ -34,6 +34,11 @@ function start_game()
   fade_perc = 1
   -- buffer for inputs
   butt_buff = -1
+
+  logo_show = true
+  logo_t = 240
+  logo_y = 35
+
   -- flag for skipping AI
   skip_ai = false
   -- array for living mobs
@@ -80,6 +85,7 @@ end
 function _draw()
   _drw()
   draw_windows()
+  draw_logo()
   if is_dyn_gen then
     fade_perc = 0
   else

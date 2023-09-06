@@ -72,6 +72,21 @@ function draw_mob(m)
   draw_spr(get_frame(m.anim), m.x * 8 + m.ox, m.y * 8 + m.oy, c, m.flp)
 end
 
+function draw_logo()
+  if logo_y > -24 then
+    logo_t -= 1
+
+    if logo_t <= 0 then
+      logo_y += logo_t / 20
+    end
+    palt(0, false)
+    palt(12, true)
+    spr(144, 22, logo_y, 14, 3)
+    palt()
+    o_print_8("etchebest's quest", 30, logo_y + 20, 7, 0)
+  end
+end
+
 function ani_map()
   t_ani += 1
   if (t_ani < 15) return
@@ -80,9 +95,9 @@ function ani_map()
   for x = 0, 15 do
     for y = 0, 15 do
       local tle = mget(x, y)
-      if tle == 112 or tle == 114 then
+      if tle == 74 or tle == 90 then
         tle += 1
-      elseif tle == 113 or tle == 115 then
+      elseif tle == 75 or tle == 91 then
         tle -= 1
       end
 

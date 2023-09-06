@@ -122,9 +122,9 @@ end
 function deco_torch(r, tx, ty, x ,y)
   if rnd(3) > 1 and y % 2 == 1 and not is_next_to_tile(tx, ty, 71) then
     if x == 0 then
-      mset(tx, ty, 112)
+      mset(tx, ty, 74)
     elseif x == r.w - 1 then
-      mset(tx, ty, 114)
+      mset(tx, ty, 90)
     end
   end
 end
