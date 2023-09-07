@@ -1,5 +1,6 @@
 function add_mob(type, mx, my)
   local m = {
+    name = bestiary.name[type],
     x = mx,
     y = my,
     ox = 0,
@@ -15,6 +16,10 @@ function add_mob(type, mx, my)
     hp = bestiary.hp[type],
     hp_max = bestiary.hp[type],
     stun = false,
+    bless = 0,
+    charge = 1,
+    last_moved = false,
+    spec = bestiary.spec[type],
     los = bestiary.los[type],
     task = ai_wait
   }
@@ -96,6 +101,16 @@ end
 
 function hit_mob(am, dm, raw)
   local dmg = am and am.atk or raw
+
+  -- add curse/bless
+  if dm.bless < 0 then
+    dmg *= 2
+  elseif dm.bless > 0 then
+    dmg = flr(dmg / 2)
+  end
+
+  dm.bless = 0
+
   local def = dm.def_min + flr(rnd(dm.def_max - dm.def_min + 1))
   dmg -= min(def, dmg)
 
@@ -104,7 +119,14 @@ function hit_mob(am, dm, raw)
 
   add_float("-" .. dmg, dm.x * 8, dm.y * 8, 9)
 
+  shake = dm == player and 0.07 or 0.05
+
   if dm.hp <= 0 then
+    if dm == player then
+      st_killed = am.name
+    else
+      st_kills += 1
+    end
     add(d_mobs, dm)
     del(mobs, dm)
     dm.die = 20
@@ -119,7 +141,8 @@ function do_ai()
       if m.stun then
         m.stun = false
       else
-        moving = m:task() or moving
+        m.last_moved = m:task()
+        moving = m.last_moved or moving
       end
     end
   end
@@ -127,6 +150,8 @@ function do_ai()
   if moving then
     _upd = update_ai_turn
     a_t = 0
+  else
+    player.stun = false
   end
 end
 
@@ -136,10 +161,7 @@ function ai_wait(self)
     self.task = ai_chase
     self.tx, self.ty = player.x, player.y
     add_float("!", self.x * 8 + 2, self.y * 8, 10)
-
-    return true
   end
-
   return false
 end
 
@@ -148,7 +170,16 @@ function ai_chase(self)
     -- attack player
     local dx, dy = player.x - self.x, player.y - self.y
     mob_bump(self, dx, dy)
-    hit_mob(self, player)
+    if self.spec == "stun" and self.charge > 0 then
+      stun_mob(player)
+      self.charge -= 1
+    elseif self.spec == "ghost" and self.charge > 0 then
+      hit_mob(self, player)
+      bless_mob(player, -1)
+      self.charge -= 1
+    else
+      hit_mob(self, player)
+    end
     sfx(57)
     return true
   else
@@ -162,6 +193,9 @@ function ai_chase(self)
       self.task = ai_wait
       add_float("?", self.x * 8 + 2, self.y * 8, 10)
     else
+      if self.spec == "slow" and self.last_moved then
+        return false
+      end
       local bdst, cand = 999, {}
       calc_dist(self.tx, self.ty)
       for i = 1, 4 do
@@ -186,7 +220,6 @@ function ai_chase(self)
       end
     end
   end
-
   return false
 end
 
@@ -262,7 +295,12 @@ end
 function consume(mob, itm)
   local eft = items.stat1[itm]
 
-  show_msg(items.name[itm].. " " .. items.desc[itm] .. "!", 60)
+  if not itm_known[itm] then
+    show_msg(items.name[itm].. " " .. items.desc[itm] .. "!", 60)
+    itm_known[itm] = true
+  end
+
+  if mob == player then st_meals += 1 end
 
   if eft == 1 then
     -- heal
@@ -279,12 +317,15 @@ function consume(mob, itm)
     stun_mob(mob)
   elseif eft == 5 then
     -- curse
+    bless_mob(mob, -1)
   elseif eft == 6 then
     -- bless
+    bless_mob(mob, 1)
   end
 end
 
 function heal_mob(mob, amt)
+  sfx(51)
   amt = min(amt, mob.hp_max - mob.hp)
   mob.hp += amt
   mob.flash = 10
@@ -295,6 +336,26 @@ function stun_mob(mob)
   mob.stun = true
   mob.flash = 10
   add_float("stun", mob.x * 8 - 3, mob.y * 8, 7)
+  sfx(51)
+end
+
+function bless_mob(mob, val)
+  mob.bless = mid(-1, 1, mob.bless + val)
+  mob.flash = 10
+
+  local txt = "bless"
+  if val < 0 then
+    txt = "curse"
+  end
+
+  add_float(txt, mob.x * 8 - 5, mob.y * 8, 7)
+
+  if mob.spec == "ghost" and val > 0 then
+    add(d_mobs, mob)
+    del(mobs, mob)
+    mob.die = 20
+  end
+  sfx(51)
 end
 
 function spawn_mobs()
@@ -337,6 +398,8 @@ function spawn_mobs()
 end
 
 function infest_room(r)
+  if r.no_spawn then return 0 end
+
   local target, x, y = 2 + flr(rnd(r.w * r.h / 6 - 1))
   target = min(5, target)
 
@@ -344,7 +407,7 @@ function infest_room(r)
     repeat
       x = r.x + flr(rnd(r.w))
       y = r.y + flr(rnd(r.h))
-    until is_walkable(x, y, "check_mobs")
+    until is_walkable(x, y, "check_mobs") and is_floor_tile(x, y)
     local m_idx = rnd(m_pool)
     add_mob(m_idx, x, y)
   end

@@ -54,13 +54,30 @@ function draw_game()
 end
 
 function draw_gover()
-  cls(2)
-  o_print_8("u ded", 54, 60, 7, 0)
-end
+  cls(0)
+  palt(12, true)
+  spr(gover_spr, gover_x, 30, gover_w, 2)
+  palt()
 
-function draw_win()
-  cls(3)
-  o_print_8("u win", 54, 60, 7, 0)
+  local txt = ""
+  if win then
+    txt = "you are now a master chef!"
+  else
+    txt = "killed by a " .. st_killed
+  end
+
+  print_center(txt, 44, 6)
+  
+  color(5)
+  cursor(45, 58)
+  if not win then
+    print("floor: 0".. floor)
+  end
+  print("steps: ".. st_steps)
+  print("kills: ".. st_kills)
+  print("meals: ".. st_meals)
+
+  print("press ❎", 48, 90, 5 + min(abs(sin(time() / 2) * 2), 1))
 end
 
 function draw_mob(m)
@@ -72,6 +89,21 @@ function draw_mob(m)
   draw_spr(get_frame(m.anim), m.x * 8 + m.ox, m.y * 8 + m.oy, c, m.flp)
 end
 
+function draw_logo()
+  if logo_y > -24 then
+    logo_t -= 1
+
+    if logo_t <= 0 then
+      logo_y += logo_t / 20
+    end
+    palt(0, false)
+    palt(12, true)
+    spr(144, 22, logo_y, 14, 3)
+    palt()
+    o_print_8("etchebest's quest", 30, logo_y + 20, 7, 0)
+  end
+end
+
 function ani_map()
   t_ani += 1
   if (t_ani < 15) return
@@ -80,9 +112,9 @@ function ani_map()
   for x = 0, 15 do
     for y = 0, 15 do
       local tle = mget(x, y)
-      if tle == 112 or tle == 114 then
+      if tle == 74 or tle == 90 then
         tle += 1
-      elseif tle == 113 or tle == 115 then
+      elseif tle == 75 or tle == 91 then
         tle -= 1
       end
 

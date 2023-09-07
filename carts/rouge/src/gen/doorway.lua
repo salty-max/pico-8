@@ -1,10 +1,11 @@
 function place_flags()
   local curf = 1
-  flags = blank_map(0)
+  flags, flag_lib = blank_map(0), {}
   for x = 0, 15 do
     for y = 0, 15 do
       if is_walkable(x, y) and flags[x][y] == 0 then
         grow_flag(x, y, curf)
+        add(flag_lib, curf)
         curf += 1
       end
     end
@@ -50,7 +51,7 @@ function carve_doors()
           end
           f1, f2 = flags[x1][y1], flags[x2][y2]
           if found and f1 != f2 then
-            add(drs, {x = mx, y = my, f = f1})
+            add(drs, {x = mx, y = my, f1 = f1, f2 = f2})
           end
         end
       end
@@ -62,7 +63,8 @@ function carve_doors()
       add(doors, d)
       mset(d.x, d.y, 1)
       snapshot()
-      grow_flag(d.x, d.y, d.f)
+      grow_flag(d.x, d.y, d.f1)
+      del(flag_lib, d.f2)
     end
   until #drs == 0
 end

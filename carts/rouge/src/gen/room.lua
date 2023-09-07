@@ -1,11 +1,15 @@
 function gen_rooms()
   local fmax, rmax = 5, 4
-  local max_w, max_h = 6, 6
+  local max_w, max_h = 10, 10
 
   repeat
     local r = rnd_room(max_w, max_h)
 
     if place_room(r) then
+      if #rooms == 1 then
+        max_w /= 2
+        max_h /= 2
+      end
       rmax -= 1
       snapshot()
     else

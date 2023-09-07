@@ -136,18 +136,34 @@ function show_inv()
   inv_box.col = col
   curr_box = inv_box
 
-  stat_box = add_window(5, 5, 84, 13, {"atk: "..player.atk.."   def: "..player.def_min.."-"..player.def_max})
+  local status = "ok"
+  if player.bless > 0 then
+    status = "bless"
+  elseif player.bless < 0 then
+    status = "curse"
+  end
+
+  stat_box = add_window(5, 5, 84, 13, {"atk:"..player.atk.." def:"..player.def_min.."-"..player.def_max.. " "..status})
+
+  show_hint()
 end
 
 function move_menu(w)
+  local moved = false
   if btnp(2) then
+    sfx(56)
     w.cur -= 1
     w.cur = (curr_box == inv_box and w.cur == 3) and 2 or w.cur
+    moved = true
   elseif btnp(3) then
+    sfx(56)
     w.cur += 1
     w.cur = (curr_box == inv_box and w.cur == 3) and 4 or w.cur
+    moved = true
   end
   w.cur = (w.cur - 1) % #w.txt + 1
+
+  return moved
 end
 
 function show_use_menu()
@@ -216,9 +232,25 @@ function use_item()
   else
     inv_box.dur = 0
     stat_box.dur = 0
+    hint_box.dur = 0
   end
 end
 
 function show_flr_msg()
   show_msg("floor " .. floor, 60)
+end
+
+function show_hint()
+  if hint_box then
+    hint_box.dur = 0
+    hint_box = nil
+  end
+
+  if inv_box.cur > 3 then
+    local itm = inv[inv_box.cur - 3]
+    if itm and items.kind[itm] == "fud" then
+      local txt = itm_known[itm] and items.desc[itm] or "???"
+      hint_box = add_window(5, 78, #txt * 4 + 7, 13, { txt })
+    end
+  end
 end

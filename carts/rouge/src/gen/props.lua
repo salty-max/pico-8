@@ -34,16 +34,46 @@ function start_end()
   for x = 0, 15 do
     for y = 0, 15 do
       local tmp = d_map[x][y]
-      if tmp > 0 and tmp < low and can_carve(x, y) then
-        px, py, low = x, y, tmp
+      if tmp > 0 then
+        local score = start_score(x, y)
+        tmp = tmp - score
+        if tmp < low and score >= 0 then 
+          px, py, low = x, y, tmp
+        end
       end
     end
   end
 
-
+  if roomap[px][py] > 0 then
+    rooms[roomap[px][py]].no_spawn = true
+  end
+  
   mset(px, py, 73)
   player.x, player.y = px, py
   snapshot()
+end
+
+function start_score(x, y)
+  if roomap[x][y] == 0 then
+    if is_next_to_room(x, y, 8) then
+      return -1
+    end
+
+    if is_freestanding(x, y) > 0 then
+      return 5
+    else
+      if can_carve(x, y) then
+        return 0
+      end
+    end
+  else
+    local scr = is_freestanding(x, y)
+    if scr > 0 then
+      return scr <= 8 and 3 or 0
+    end
+  end
+
+  return -1
 end
 
 function place_doors()
@@ -62,14 +92,9 @@ function prettify_walls()
     for y = 0, 15 do
       if mget(x, y) == 2 then
         local sig, tle = get_sig(x, y), 3
+        local w_tle = pull_sig(sig, wall_sig, wall_msk)
 
-        for i = 1, #wall_sig do
-          if sig_comp(sig, wall_sig[i], wall_msk[i]) then
-            tle = i + 15
-            break
-          end
-        end
-
+        tle = w_tle == 0 and 3 or w_tle + 15
         mset(x, y, tle)
       elseif mget(x, y) == 1 then
         local tle = mget(x, y - 1)
@@ -94,9 +119,15 @@ function deco_rooms()
   dirt_arr = split("1, 9, 14, 15")
   pots_arr = split("1, 1, 65, 66")
   
-  local funcs, func = {deco_carpet, deco_dirt, deco_torch, deco_farn, deco_pots}, deco_pots
+  local funcs, func, rpot = {deco_carpet, deco_dirt, deco_torch, deco_farn, deco_pots}, deco_pots, {}
 
   for r in all(rooms) do
+    add(rpot, r)
+  end
+
+  repeat
+    local r = rnd(rpot)
+    del(rpot, r)
     for x = 0, r.w - 1 do
       for y = r.h - 1, 1, -1 do
         if mget(r.x + x, r.y + y) == 1 then
@@ -105,7 +136,7 @@ function deco_rooms()
       end
     end
     func = rnd(funcs)
-  end
+  until #rpot == 0
 end
 
 function deco_carpet(r, tx, ty, x, y)
@@ -122,9 +153,9 @@ end
 function deco_torch(r, tx, ty, x ,y)
   if rnd(3) > 1 and y % 2 == 1 and not is_next_to_tile(tx, ty, 71) then
     if x == 0 then
-      mset(tx, ty, 112)
+      mset(tx, ty, 74)
     elseif x == r.w - 1 then
-      mset(tx, ty, 114)
+      mset(tx, ty, 90)
     end
   end
 end
@@ -167,12 +198,15 @@ function place_chests()
 end
 
 function place_chest(r, rare)
-  local x, y = 68
+  local x, y
       
   repeat
     x, y = r.x + flr(rnd(r.w - 2)) + 1, r.y + flr(rnd(r.h - 2)) + 1
   until mget(x, y) == 1
 
-  local tle = rare and 70 or 68
-  mset(x, y, tle)
+  mset(x, y, rare and 70 or 68)
+end
+
+function is_freestanding(x, y)
+  return pull_sig(get_sig(x, y), free_sig, free_msk)
 end

@@ -20,6 +20,10 @@ function o_print_8(s, x, y, c, oc)
   print(s, x, y, c)
 end
 
+function print_center(s, y, c)
+  print(s, 64 - #s * 2, y, c)
+end
+
 function dist(fx, fy, tx, ty)
   local dx, dy = fx - tx, fy - ty
   return sqrt(dx * dx + dy * dy)
@@ -112,4 +116,11 @@ function copy_map(mx, my)
       end
     end
   end
+end
+
+function do_shake()
+  local sx, sy = 16 - rnd(32), 16 - rnd(32)
+  camera(sx * shake, sy * shake)
+  shake *= 0.95
+  if (shake < 0.05) shake = 0
 end

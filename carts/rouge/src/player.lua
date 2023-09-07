@@ -5,6 +5,7 @@ function move_player(dx, dy)
   if is_walkable(destx, desty, "check_mobs") then
     sfx(63)
     mob_walk(player, dx, dy)
+    if floor > 0 then st_steps += 1 end
     a_t = 0
     _upd = update_pturn
   else
@@ -34,8 +35,9 @@ end
 function trigger_bump(tile, dx, dy)
   if tile == 64 then
     -- tablets
+    sfx(54)
     if floor == 0 then
-      show_dialog({"", " welcome to my", " cheaply-made tower!", "", " inside: briefly", " trained monsters, ", " puzzles i forgot to", " finish, and the", " famous glowing rock!", "", " climb, if you dare!", " mwa ha ha ha ha ha", " *cough* *cough*", ""})
+      show_dialog(split(" _ philippe,_ _ welcome to hell's_ kitchen!_ _ seek the fabled_ blood knacky to_ prove your culinary_ might but beware the_ accursed wait staff!_ _ bon appetit!_ mwa ha ha ha ha ha_ _ g. ramsay_ ", "_"))
     end
   elseif tile == 109 then
     win = true
@@ -46,12 +48,15 @@ function trigger_bump(tile, dx, dy)
     mset(dx, dy, rnd(dbr_pool))
     if rnd(3) < 1 and floor > 0 then
       if rnd(5) < 1 then
+        sfx(60)
         add_mob(rnd(m_pool), dx, dy)
       else
         if get_free_slot() == -1 then
+          sfx(60)
           show_msg("inventory full!", 60)
           skip_ai = true
         else
+          sfx(61)
           local itm = rnd(flr_i_pool_com)
           take_item(itm)
           show_msg("found " .. items.name[itm] .. "!", 60)
@@ -82,6 +87,8 @@ function trigger_step()
   local tle = mget(player.x, player.y)
 
   if tle == 72 then
+    sfx(55)
+    player.bless = 0
     fade_out()
     gen_floor(floor + 1)
     show_flr_msg()
@@ -93,20 +100,23 @@ end
 
 function check_end()
   if win then
-    _upd = update_win
-    _drw = draw_win
-    windows = {}
-    fade_out(0.02)
+    music(24)
+    gover_spr, gover_x, gover_w = 112, 17, 12
+    show_end()
     return false
   elseif player.hp <= 0 then
-    _upd = update_gover
-    _drw = draw_gover
-    windows = {}
-    fade_out(0.02)
+    music(22)
+    gover_spr, gover_x, gover_w = 80, 38, 7
+    show_end()
     return false
   end
 
   return true
+end
+
+function show_end()
+  windows, _upd, _drw = {}, update_gover, draw_gover
+  fade_out(0.02)
 end
 
 function unfog()
@@ -134,6 +144,8 @@ end
 
 function throw()
   local itm, tx, ty = inv[thr_slot], throw_tile()
+
+  sfx(52)
 
   if is_in_bounds(tx, ty) then
     local mob = get_mob_at(tx, ty)
