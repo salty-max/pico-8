@@ -62,12 +62,19 @@ function update_ai_turn()
 end
 
 function update_inv()
+  if move_menu(curr_box) then
+    show_hint()
+  end
+
   if btnp(5) then
     sfx(53)
     if curr_box == inv_box then
       _upd = update_game
       inv_box.dur = 0
       stat_box.dur = 0
+      if hint_box then
+        hint_box.dur = 0
+      end
     elseif curr_box == itm_menu_box then
       itm_menu_box.dur = 0
       curr_box = inv_box
@@ -82,8 +89,6 @@ function update_inv()
       use_item()
     end
   end
-
-  move_menu(curr_box)
 end
 
 function update_throw()

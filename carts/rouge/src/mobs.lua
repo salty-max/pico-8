@@ -293,9 +293,12 @@ end
 function consume(mob, itm)
   local eft = items.stat1[itm]
 
-  if mob == player then st_meals += 1 end
+  if not itm_known[itm] then
+    show_msg(items.name[itm].. " " .. items.desc[itm] .. "!", 60)
+    itm_known[itm] = true
+  end
 
-  show_msg(items.name[itm].. " " .. items.desc[itm] .. "!", 60)
+  if mob == player then st_meals += 1 end
 
   if eft == 1 then
     -- heal

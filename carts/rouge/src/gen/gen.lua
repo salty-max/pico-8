@@ -14,7 +14,7 @@ function gen_floor(f)
     copy_map(32, 0)
   else
     make_flr_i_pool()
-    fog = blank_map(0)
+    fog = blank_map(1)
     map_gen()
     unfog()
   end

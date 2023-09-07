@@ -73,7 +73,6 @@ function start_game()
 
   make_item_pools()
   handle_food_names()
-
   gen_floor(0)
 end
 
