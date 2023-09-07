@@ -44,7 +44,10 @@ function start_end()
     end
   end
 
-
+  if roomap[px][py] > 0 then
+    rooms[roomap[px][py]].no_spawn = true
+  end
+  
   mset(px, py, 73)
   player.x, player.y = px, py
   snapshot()

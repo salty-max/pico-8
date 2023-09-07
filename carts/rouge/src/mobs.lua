@@ -398,6 +398,8 @@ function spawn_mobs()
 end
 
 function infest_room(r)
+  if r.no_spawn then return 0 end
+
   local target, x, y = 2 + flr(rnd(r.w * r.h / 6 - 1))
   target = min(5, target)
 
