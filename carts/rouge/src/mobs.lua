@@ -119,6 +119,8 @@ function hit_mob(am, dm, raw)
 
   add_float("-" .. dmg, dm.x * 8, dm.y * 8, 9)
 
+  shake = dm == player and 0.07 or 0.05
+
   if dm.hp <= 0 then
     if dm == player then
       st_killed = am.name

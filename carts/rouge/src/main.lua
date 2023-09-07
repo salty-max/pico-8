@@ -30,8 +30,11 @@ function _init()
 end
 
 function start_game()
+  -- activate music bass loop
   poke(0x3101, 194)
   music(0)
+
+  shake = 0
   -- timer for map animation
   t_ani = 0
   -- fade percentage (1 ==  fully opaque)
@@ -84,6 +87,7 @@ function _update60()
 end
 
 function _draw()
+  do_shake()
   _drw()
   draw_windows()
   draw_logo()

@@ -117,3 +117,10 @@ function copy_map(mx, my)
     end
   end
 end
+
+function do_shake()
+  local sx, sy = 16 - rnd(32), 16 - rnd(32)
+  camera(sx * shake, sy * shake)
+  shake *= 0.95
+  if (shake < 0.05) shake = 0
+end

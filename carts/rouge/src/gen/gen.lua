@@ -5,6 +5,7 @@ function gen_floor(f)
   fog = blank_map(0)
   
   if floor == 1 then
+    -- remove music bass loop for smooth transition
     poke(0x3101, 66)
   end
 
