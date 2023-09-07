@@ -15,6 +15,16 @@ function get_sig(x, y)
   return sig
 end
 
+function pull_sig(sig, sig_arr, msk_arr)
+  for i = 1, #sig_arr do
+    if sig_comp(sig, sig_arr[i], msk_arr[i]) then
+      return i
+    end
+  end
+
+  return 0
+end
+
 function is_floor_tile(x, y)
   local tle = mget(x, y)
   return tle == 1 or tle == 4 or tle == 5 or tle == 6 or tle == 7

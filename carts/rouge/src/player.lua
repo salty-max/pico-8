@@ -48,12 +48,15 @@ function trigger_bump(tile, dx, dy)
     mset(dx, dy, rnd(dbr_pool))
     if rnd(3) < 1 and floor > 0 then
       if rnd(5) < 1 then
+        sfx(60)
         add_mob(rnd(m_pool), dx, dy)
       else
         if get_free_slot() == -1 then
+          sfx(60)
           show_msg("inventory full!", 60)
           skip_ai = true
         else
+          sfx(61)
           local itm = rnd(flr_i_pool_com)
           take_item(itm)
           show_msg("found " .. items.name[itm] .. "!", 60)
@@ -97,12 +100,12 @@ end
 
 function check_end()
   if win then
-    music(23)
+    music(24)
     gover_spr, gover_x, gover_w = 112, 17, 12
     show_end()
     return false
   elseif player.hp <= 0 then
-    music(21)
+    music(22)
     gover_spr, gover_x, gover_w = 80, 38, 7
     show_end()
     return false
@@ -112,7 +115,7 @@ function check_end()
 end
 
 function show_end()
-  wind, _upd, _drw = {}, update_gover, draw_gover
+  windows, _upd, _drw = {}, update_gover, draw_gover
   fade_out(0.02)
 end
 

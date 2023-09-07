@@ -148,6 +148,8 @@ function do_ai()
   if moving then
     _upd = update_ai_turn
     a_t = 0
+  else
+    player.stun = false
   end
 end
 
@@ -398,7 +400,7 @@ function infest_room(r)
     repeat
       x = r.x + flr(rnd(r.w))
       y = r.y + flr(rnd(r.h))
-    until is_walkable(x, y, "check_mobs")
+    until is_walkable(x, y, "check_mobs") and is_floor_tile(x, y)
     local m_idx = rnd(m_pool)
     add_mob(m_idx, x, y)
   end

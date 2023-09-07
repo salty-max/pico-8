@@ -49,12 +49,7 @@ function can_carve(x, y, walk)
   if not is_in_bounds(x, y) then return false end
   local walk = walk == nil and is_walkable(x, y) or walk
   if is_walkable(x, y) == walk then
-    local sig = get_sig(x, y)
-    for i = 1, #crv_sig do
-      if sig_comp(sig, crv_sig[i], crv_msk[i]) then
-        return true
-      end
-    end
+    return pull_sig(get_sig(x, y), crv_sig, crv_msk) ~= 0
   end
 
   return false
@@ -78,9 +73,9 @@ function fill_ends()
   until not filled
 end
 
-function is_next_to_room(x, y)
-
-  for i = 1, 4 do
+function is_next_to_room(x, y, dirs)
+  local dirs = dirs or 4
+  for i = 1, dirs do
     if is_in_bounds(x + dir_x[i], y + dir_y[i]) and roomap[x + dir_x[i]][y + dir_y[i]] != 0 then
       return true
     end
