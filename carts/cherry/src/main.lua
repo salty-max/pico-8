@@ -1,5 +1,5 @@
 function _init()
-  frame = 0
+  a_t = 0
 
   ship_x = 60
   ship_y = 112
@@ -18,7 +18,7 @@ function _init()
 end
 
 function _update60()
-  frame += 1
+  a_t += 1
   move_ship()
   shoot()
 
@@ -27,10 +27,11 @@ function _update60()
       del(bul, b)
     end
     b.y -= bul_spd
+    b.spr = 1 + flr((a_t / 2) % #b.anm)
   end
 
   -- react flame animation
-  flm_idx = 1 + flr((frame / 2) % #ship_flm)
+  flm_idx = 1 + flr((a_t / 2) % #ship_flm)
 
   -- muzzle flash
   if muzzle > 0 then
@@ -42,13 +43,13 @@ function _draw()
   cls(0)
   
   for b in all(bul) do
-    spr(16, b.x, b.y)
+    spr(b.anm[b.spr], b.x, b.y)
   end
 
   if muzzle > 0 then
     circfill(ship_x + 3, ship_y - 2, muzzle, 7)
   end
-  
+
   spr(ship_spr, ship_x, ship_y)
   spr(ship_flm[flm_idx], ship_x, ship_y + 7)
 
@@ -61,5 +62,10 @@ function _draw()
 end
 
 function make_bullet(x, y)
-  add(bul, {x = x, y = y})
+  add(bul, {
+    x = x,
+    y = y,
+    spr = 1,
+    anm = {16, 17, 18, 19, 20}
+  })
 end
