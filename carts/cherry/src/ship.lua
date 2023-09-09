@@ -1,11 +1,14 @@
 function move_ship()
   ship_vx = 0
   ship_vy = 0
+  ship_spr = 2
 
   if btn(0) then
     ship_vx = -1
+    ship_spr = 1
   elseif btn(1) then
     ship_vx = 1
+    ship_spr = 3
   end
   
   if btn(2) then
@@ -34,7 +37,6 @@ function shoot()
   if btnp(4) then
     bul_ct += 1
     sfx(0)
-    local bx = bul_ct % 2 == 0 and ship_x - 4 or ship_x + 4
-    make_bullet(bx, ship_y - 4)
+    make_bullet(ship_x, ship_y - 4)
   end
 end
