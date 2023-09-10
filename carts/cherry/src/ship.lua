@@ -37,6 +37,6 @@ function shoot()
   if btnp(4) then
     sfx(0)
     muzzle = 5
-    make_bullet(ship_x, ship_y - 4)
+    make_bullet(ship_x, ship_y - 6)
   end
 end

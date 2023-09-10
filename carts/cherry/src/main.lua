@@ -14,6 +14,9 @@ function _init()
   bul = {}
   bul_spd = 2
 
+  score = 1337
+  lives = 2
+
   debug = {}
 end
 
@@ -27,7 +30,7 @@ function _update60()
       del(bul, b)
     end
     b.y -= bul_spd
-    b.spr = 1 + flr((a_t / 2) % #b.anm)
+    b.spr = 1 + flr((a_t / 6) % #b.anm)
   end
 
   -- react flame animation
@@ -53,6 +56,15 @@ function _draw()
   spr(ship_spr, ship_x, ship_y)
   spr(ship_flm[flm_idx], ship_x, ship_y + 7)
 
+  print("score: " .. score, 4, 4, 12)
+
+  for i = 1, 3 do
+    local s = 64
+    if lives < i then
+      s = 65
+    end
+    spr(s, 89 + (i * 9), 4)
+  end
 
   cursor(4, 4)
   color(12)
@@ -66,6 +78,6 @@ function make_bullet(x, y)
     x = x,
     y = y,
     spr = 1,
-    anm = {16, 17, 18, 19, 20}
+    anm = {16, 17}
   })
 end
