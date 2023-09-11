@@ -24,7 +24,8 @@ function start_game()
   bul = {}
   bul_spd = 2
 
-  
+  mobs= {}
+  make_mob(60, 30)
 
   score = 1337
   lives = 2

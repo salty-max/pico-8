@@ -2,12 +2,13 @@ function update_game()
   a_t += 1
   update_starfield()
   update_ship()
+  update_mobs()
   update_bullets()
 end
 
 function update_bullets()
   for b in all(bul) do
-    if b.y < -7 then
+    if b.y < -8 then
       del(bul, b)
     end
     b.y -= bul_spd
@@ -20,16 +21,22 @@ function update_ship()
   shoot()
 
   -- react flame animation
-  flm_idx = 1 + flr((a_t / 2) % #ship_flm)
+  flm_idx = 1 + flr((a_t / 4) % #ship_flm)
 
   -- muzzle flash
   if muzzle > 0 then
     muzzle -= 1
   end
 
-  if btnp(4) then
+  if btnp(5) then
     _upd = update_gover
     _drw = draw_gover
+  end
+end
+
+function update_mobs()
+  for m in all(mobs) do
+    m.spr = 1 + flr((a_t / 12) % #m.anm)
   end
 end
 

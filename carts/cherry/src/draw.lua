@@ -2,6 +2,7 @@ function draw_game()
   cls(0)
   draw_starfield()
   draw_ship()
+  draw_mobs()
   draw_bullets()
   draw_ui()
 end
@@ -13,6 +14,12 @@ function draw_ship()
 
   spr(ship_spr, ship_x, ship_y)
   spr(ship_flm[flm_idx], ship_x, ship_y + 7)
+end
+
+function draw_mobs()
+  for m in all(mobs) do
+    spr(m.anm[m.spr], m.x, m.y)
+  end
 end
 
 function draw_bullets()
