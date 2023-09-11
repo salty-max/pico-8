@@ -40,3 +40,12 @@ function shoot()
     make_bullet(ship_x, ship_y - 6)
   end
 end
+
+function make_bullet(x, y)
+  add(bul, {
+    x = x,
+    y = y,
+    spr = 1,
+    anm = {16, 17}
+  })
+end

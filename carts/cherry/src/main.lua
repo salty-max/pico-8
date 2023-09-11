@@ -1,4 +1,14 @@
 function _init()
+  stars = {}
+  make_starfield()
+
+  _upd = update_menu
+  _drw = draw_menu
+
+  debug = {}
+end
+
+function start_game()
   a_t = 0
 
   ship_x = 60
@@ -14,70 +24,25 @@ function _init()
   bul = {}
   bul_spd = 2
 
+  
+
   score = 1337
   lives = 2
 
-  debug = {}
+  _upd = update_game
+  _drw = draw_game
 end
 
 function _update60()
-  a_t += 1
-  move_ship()
-  shoot()
-
-  for b in all(bul) do
-    if b.y < -7 then
-      del(bul, b)
-    end
-    b.y -= bul_spd
-    b.spr = 1 + flr((a_t / 6) % #b.anm)
-  end
-
-  -- react flame animation
-  flm_idx = 1 + flr((a_t / 2) % #ship_flm)
-
-  -- muzzle flash
-  if muzzle > 0 then
-    muzzle -= 1
-  end
+  _upd()
 end
 
 function _draw()
-  cls(0)
-  
-  for b in all(bul) do
-    spr(b.anm[b.spr], b.x, b.y)
-  end
-
-  if muzzle > 0 then
-    circfill(ship_x + 3, ship_y - 2, muzzle, 7)
-  end
-
-  spr(ship_spr, ship_x, ship_y)
-  spr(ship_flm[flm_idx], ship_x, ship_y + 7)
-
-  print("score: " .. score, 4, 4, 12)
-
-  for i = 1, 3 do
-    local s = 64
-    if lives < i then
-      s = 65
-    end
-    spr(s, 89 + (i * 9), 4)
-  end
+  _drw()
 
   cursor(4, 4)
   color(12)
   for d in all(debug) do
     print(d)
   end
-end
-
-function make_bullet(x, y)
-  add(bul, {
-    x = x,
-    y = y,
-    spr = 1,
-    anm = {16, 17}
-  })
 end
